@@ -1,0 +1,16 @@
+# Редирект HTTP → HTTPS (после включения SSL в панели хостинга).
+# Файл попадает в dist/ при сборке и загружается вместе с сайтом.
+#
+# Запрет прямого HTTP-доступа к служебным файлам Passenger/Node (дублирует denylist в server.js).
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule ^server\.js$ - [F,L]
+	RewriteRule ^meeting-booking-handler\.cjs$ - [F,L]
+	RewriteRule ^api/meeting-booking\.secrets\.php$ - [F,L]
+	RewriteRule ^\.env$ - [F,L]
+	RewriteRule ^tmp(/.*)?$ - [F,L]
+	RewriteCond %{HTTPS} !=on
+	RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+	RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>

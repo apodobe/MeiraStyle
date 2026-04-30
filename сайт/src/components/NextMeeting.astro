@@ -1,0 +1,584 @@
+---
+// NextMeeting.astro — дата/время встречи для обратного отсчёта (МСК)
+// Блок «Планируют пойти» (скрыт при 0 записей) — GET /api/meeting-attendees.
+const meetingIso = '2026-04-29T19:00:00+03:00';
+const cafeAddress =
+	'Москва, ул. Образцова, 11, стр. 1А — кафе «Ришон» в Еврейском музее и центре толерантности';
+---
+
+<section
+	id="next-meeting"
+	class="border-line section-y border-b bg-cream-50"
+	aria-labelledby="next-meeting-heading"
+>
+	<div class="mx-auto max-w-content gutter-x">
+		<div class="mx-auto mb-10 max-w-3xl text-center">
+			<h2 id="next-meeting-heading" class="type-section-title text-ink mb-4 text-balance">
+				Следующая встреча
+			</h2>
+			<p class="text-ink-muted type-lead text-pretty">
+				Присоединяйтесь к нашему живому мероприятию
+			</p>
+			<p
+				id="meeting-countdown-section"
+				class="text-ink mt-4 text-sm font-medium tabular-nums sm:text-base"
+				aria-live="polite"
+				data-meeting-at={meetingIso}
+			>
+				<span class="text-ink-muted font-normal">До встречи: </span>
+				<span id="meeting-countdown-section-value">—</span>
+			</p>
+		</div>
+
+		<div class="mx-auto max-w-2xl">
+			<button
+				id="open-meeting-modal"
+				class="group relative w-full overflow-hidden rounded-[var(--radius-md)] border border-line bg-cream-100 text-left transition-all duration-300 hover:shadow-[var(--shadow-soft)] hover:border-accent/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+				aria-haspopup="dialog"
+			>
+				<div class="flex flex-col sm:flex-row">
+					<div class="relative w-full shrink-0 sm:w-2/5 aspect-[4/3] sm:aspect-auto">
+						<img
+							src="/images/site/next-meeting.png"
+							alt="Стильный воркшоп: магазины +тренды"
+							class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<div class="flex flex-col justify-center p-6 sm:p-8">
+						<div class="mb-3 flex flex-wrap items-center gap-3 text-sm">
+							<span class="inline-flex items-center gap-1.5 font-medium text-accent">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+								29 апреля, 19:00
+							</span>
+							<span class="text-ink-muted/50">•</span>
+							<span class="inline-flex items-center gap-1.5 text-ink-muted">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+								Кафе Ришон
+							</span>
+						</div>
+						<p class="text-ink-muted mb-3 text-xs leading-snug sm:text-sm">
+							{cafeAddress}
+						</p>
+						<h3 class="font-serif text-ink mb-2 text-xl font-medium leading-snug sm:text-2xl">
+							Стильный воркшоп: магазины + тренды
+						</h3>
+						<p class="text-ink-muted mb-4 text-sm leading-relaxed line-clamp-2">
+							Узнайте подробности, забронируйте место и оплатите участие.
+						</p>
+						<p
+							data-meeting-attendees
+							class="hidden text-ink-muted mb-4 flex flex-wrap items-baseline gap-x-1.5 gap-y-1 text-sm leading-snug"
+							aria-live="polite"
+						>
+							<span>Планируют пойти:</span>
+							<span class="meeting-attendees-names font-medium">…</span>
+							<span class="meeting-attendees-extra hidden" aria-hidden="true"></span>
+						</p>
+						<span class="text-accent-hover mt-auto inline-flex items-center gap-1 text-sm font-medium transition-colors group-hover:text-accent">
+							Подробнее
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+						</span>
+					</div>
+				</div>
+			</button>
+		</div>
+	</div>
+</section>
+
+<dialog
+	id="meeting-modal"
+	class="backdrop:bg-ink/60 m-auto max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-[var(--radius-lg)] border border-line bg-cream-50 p-0 shadow-2xl backdrop:backdrop-blur-sm open:animate-in open:fade-in open:zoom-in-95"
+>
+	<div class="relative flex max-h-[90vh] flex-col">
+		<button
+			id="close-meeting-modal"
+			class="absolute right-4 top-4 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full bg-cream-50/80 text-ink backdrop-blur-sm transition-colors hover:bg-cream-100 hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+			aria-label="Закрыть"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+		</button>
+
+		<div class="overflow-y-auto">
+			<div class="relative aspect-video w-full sm:aspect-[21/9]">
+				<img
+					src="/images/site/next-meeting.png"
+					alt="Стильный воркшоп: магазины +тренды"
+					class="absolute inset-0 h-full w-full object-cover"
+					loading="lazy"
+				/>
+			</div>
+
+			<div class="p-6 sm:p-8 md:p-10">
+				<div class="mb-4 flex flex-wrap items-center gap-4 text-sm sm:text-base">
+					<span class="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 font-medium text-accent">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+						Среда, 29 апреля, 19:00
+					</span>
+					<a
+						href="https://caferishon.ru/"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex items-center gap-1.5 text-ink-muted transition-colors hover:text-accent"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+						Кафе Ришон
+					</a>
+				</div>
+				<p class="text-ink-muted mb-6 text-sm leading-relaxed">
+					{cafeAddress}
+				</p>
+				<p
+					id="meeting-countdown-modal"
+					class="text-ink mb-6 text-sm font-medium tabular-nums sm:text-base"
+					aria-live="polite"
+				>
+					<span class="text-ink-muted font-normal">До встречи: </span>
+					<span id="meeting-countdown-modal-value">—</span>
+				</p>
+				<p
+					data-meeting-attendees
+					class="hidden text-ink-muted mb-6 flex flex-wrap items-baseline gap-x-1.5 gap-y-1 text-sm leading-snug sm:text-base"
+					aria-live="polite"
+				>
+					<span>Планируют пойти:</span>
+					<span class="meeting-attendees-names font-medium">…</span>
+					<span class="meeting-attendees-extra hidden" aria-hidden="true"></span>
+				</p>
+
+				<h3 class="font-serif text-ink mb-4 text-2xl font-medium leading-snug sm:text-3xl">
+					Стильный воркшоп: магазины + тренды
+				</h3>
+
+				<ul class="text-ink-muted mb-8 max-w-none list-none space-y-4 pl-0 text-pretty leading-relaxed">
+					<li class="flex gap-3">
+						<span class="shrink-0 select-none" aria-hidden="true">✅</span>
+						<span>
+							<strong class="text-ink font-medium">Забудьте про «Вайлдберрис» и Maag (Zara):</strong>{' '}
+							мы составляем карту новых, не попсовых бутиков, где продаются стильные вещи с
+							характером, а не «одежда для всех».
+						</span>
+					</li>
+					<li class="flex gap-3">
+						<span class="shrink-0 select-none" aria-hidden="true">✅</span>
+						<span>
+							<strong class="text-ink font-medium">Челлендж-лист на выход:</strong> каждая уходит с
+							адресами «секретных» бутиков.
+						</span>
+					</li>
+					<li class="flex gap-3">
+						<span class="shrink-0 select-none" aria-hidden="true">✅</span>
+						<span>Посекретничаем о трендах.</span>
+					</li>
+					<li class="flex gap-3">
+						<span class="shrink-0 select-none" aria-hidden="true">✅</span>
+						<span>
+							<strong class="text-ink font-medium">Энергия вместо рутины:</strong> приходите за
+							вдохновением и приятным женским кругом — без скуки и масс-маркета.
+						</span>
+					</li>
+				</ul>
+
+				<div class="border-t border-line pt-8">
+					<h4 class="font-serif text-ink mb-6 text-xl font-medium">Бронирование и оплата</h4>
+
+					<div class="grid gap-8 sm:grid-cols-2">
+						<div class="flex flex-col justify-center rounded-[var(--radius-md)] bg-cream-100 p-6">
+							<div class="mb-2 text-sm text-ink-muted">Стоимость участия:</div>
+							<div class="mb-4 flex items-baseline gap-2">
+								<span id="current-price" class="text-3xl font-semibold text-ink">2000 ₽</span>
+								<span id="original-price" class="hidden text-lg text-ink-muted line-through"
+									>2000 ₽</span
+								>
+							</div>
+							<div id="price-message" class="text-sm font-medium text-accent">
+								<!-- Заполняется через JS -->
+							</div>
+							<div class="mt-4 text-xs text-ink-muted">
+								<ul class="space-y-1">
+									<li>До 22 апреля: 1000 ₽</li>
+									<li>С 23 по 25 апреля: 1500 ₽</li>
+									<li>После 25 апреля: 2000 ₽</li>
+								</ul>
+							</div>
+						</div>
+
+						<div
+							id="meeting-booking-slot"
+							class="flex min-h-[220px] flex-col items-stretch justify-center sm:min-h-[260px]"
+						>
+							<div id="meeting-booking-form-wrap" class="w-full">
+								<form
+									id="meeting-booking-form"
+									class="mx-auto w-full max-w-sm space-y-4 text-left"
+									method="post"
+									action="#"
+									novalidate
+								>
+									<div>
+										<label
+											for="meeting-booking-name"
+											class="text-ink mb-1 block text-sm font-medium"
+										>
+											Имя
+										</label>
+										<input
+											id="meeting-booking-name"
+											name="name"
+											type="text"
+											autocomplete="name"
+											required
+											maxlength="200"
+											class="border-line focus-visible:ring-accent w-full rounded-[var(--radius-md)] border bg-white px-3 py-2 text-sm text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+										/>
+									</div>
+									<div>
+										<label
+											for="meeting-booking-phone"
+											class="text-ink mb-1 block text-sm font-medium"
+										>
+											Телефон
+										</label>
+										<input
+											id="meeting-booking-phone"
+											name="phone"
+											type="tel"
+											inputmode="tel"
+											autocomplete="tel"
+											required
+											class="border-line focus-visible:ring-accent w-full rounded-[var(--radius-md)] border bg-white px-3 py-2 text-sm text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+										/>
+									</div>
+									<p
+										id="meeting-booking-error"
+										class="hidden text-sm text-red-700"
+										role="alert"
+									>
+									</p>
+									<button
+										type="submit"
+										id="meeting-booking-submit"
+										class="bg-accent hover:bg-accent-hover text-cream-50 focus-visible:ring-accent w-full rounded-[var(--radius-md)] px-4 py-3 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-60"
+									>
+										Забронировать
+									</button>
+								</form>
+							</div>
+							<div
+								id="meeting-booking-qr-wrap"
+								class="hidden flex-col items-center justify-center text-center"
+							>
+								<div
+									class="mb-3 w-44 rounded-lg border border-line bg-white p-2 shadow-sm sm:w-48"
+								>
+									<img
+										src="/images/site/meeting-payment-qr.png"
+										alt="QR-код для оплаты участия"
+										width="176"
+										height="176"
+										class="mx-auto h-auto w-full max-w-[176px]"
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+								<p class="text-ink-muted text-sm leading-relaxed">
+									Отсканируйте QR-код или{' '}
+									<a
+										href="https://tbank.ru/cf/1kB1KbhZ84h"
+										target="_blank"
+										rel="noopener noreferrer"
+										class="text-accent font-medium underline decoration-accent/40 underline-offset-2 transition-colors hover:text-accent-hover"
+									>по ссылке</a>
+								</p>
+								<p class="text-ink mt-3 max-w-[16rem] text-sm leading-snug">
+									После оплаты, напишите мне, пожалуйста
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</dialog>
+
+<script define:vars={{ meetingIso }}>
+	const modal = document.getElementById('meeting-modal');
+	const openBtn = document.getElementById('open-meeting-modal');
+	const closeBtn = document.getElementById('close-meeting-modal');
+
+	const SESSION_KEY = 'osipovaMeetingBookingApr2026';
+	const formWrap = document.getElementById('meeting-booking-form-wrap');
+	const qrWrap = document.getElementById('meeting-booking-qr-wrap');
+	const bookingForm = document.getElementById('meeting-booking-form');
+	const bookingError = document.getElementById('meeting-booking-error');
+	const bookingSubmit = document.getElementById('meeting-booking-submit');
+	const BADGE_CLASS =
+		'inline-flex h-7 min-w-[1.75rem] shrink-0 items-center justify-center rounded-full border border-accent/35 bg-accent/12 px-2 text-xs font-semibold tabular-nums text-accent';
+
+	/**
+	 * Имена (до 2) + при необходимости «и ещё +N», где N = всего минус показанные имена (не дублируем +1 при одном человеке).
+	 * @param {HTMLElement} root
+	 * @param {unknown} names
+	 * @param {unknown} total
+	 */
+	function fillAttendeesBlock(root, names, total) {
+		const elNames = root.querySelector('.meeting-attendees-names');
+		const elExtra = root.querySelector('.meeting-attendees-extra');
+		if (!(elNames instanceof HTMLElement) || !(elExtra instanceof HTMLElement)) return;
+
+		const n = Math.max(0, Math.floor(Number(total) || 0));
+		const arr = Array.isArray(names)
+			? names.map((x) => String(x).trim()).filter((s) => s.length > 0).slice(0, 2)
+			: [];
+
+		elExtra.textContent = '';
+		elExtra.classList.add('hidden');
+		elExtra.setAttribute('aria-hidden', 'true');
+
+		if (n === 0) {
+			root.classList.add('hidden');
+			return;
+		}
+		root.classList.remove('hidden');
+		elNames.classList.add('text-ink', 'font-medium');
+		elNames.classList.remove('text-ink-muted', 'font-normal');
+
+		const extra = Math.max(0, n - arr.length);
+
+		if (arr.length === 0) {
+			elNames.textContent = 'уже записались';
+			const badge = document.createElement('span');
+			badge.className = BADGE_CLASS;
+			badge.textContent = String(n);
+			badge.setAttribute('aria-label', `Всего записалось: ${n}`);
+			elExtra.append(document.createTextNode(' '), badge);
+			elExtra.classList.remove('hidden');
+			elExtra.setAttribute('aria-hidden', 'false');
+			return;
+		}
+
+		elNames.textContent = arr.join(', ');
+
+		if (extra > 0) {
+			elExtra.append(document.createTextNode(' '));
+			const andEl = document.createElement('span');
+			andEl.className = 'text-ink-muted font-normal';
+			andEl.textContent = 'и ещё';
+			elExtra.append(andEl, document.createTextNode(' '));
+			const badge = document.createElement('span');
+			badge.className = BADGE_CLASS;
+			badge.textContent = `+${extra}`;
+			badge.setAttribute(
+				'aria-label',
+				extra === 1 ? 'Ещё один участник' : `Ещё участников: ${extra}`
+			);
+			elExtra.append(badge);
+			elExtra.classList.remove('hidden');
+			elExtra.setAttribute('aria-hidden', 'false');
+		}
+	}
+
+	async function loadMeetingAttendees() {
+		const roots = document.querySelectorAll('[data-meeting-attendees]');
+		if (roots.length === 0) return;
+		try {
+			const res = await fetch('/api/meeting-attendees', { cache: 'no-store' });
+			if (!res.ok) throw new Error('bad status');
+			const data = await res.json();
+			if (!data || data.ok !== true) throw new Error('bad payload');
+			roots.forEach((root) => {
+				if (root instanceof HTMLElement) fillAttendeesBlock(root, data.names, data.total);
+			});
+		} catch {
+			roots.forEach((root) => {
+				if (!(root instanceof HTMLElement)) return;
+				root.classList.add('hidden');
+			});
+		}
+	}
+
+	function showBookingQrPanel() {
+		if (formWrap) formWrap.classList.add('hidden');
+		if (qrWrap) {
+			qrWrap.classList.remove('hidden');
+			qrWrap.classList.add('flex');
+		}
+	}
+
+	function showBookingFormPanel() {
+		if (qrWrap) {
+			qrWrap.classList.add('hidden');
+			qrWrap.classList.remove('flex');
+		}
+		if (formWrap) formWrap.classList.remove('hidden');
+	}
+
+	function syncBookingPanelFromSession() {
+		try {
+			if (sessionStorage.getItem(SESSION_KEY) === '1') {
+				showBookingQrPanel();
+			} else {
+				showBookingFormPanel();
+			}
+		} catch {
+			showBookingFormPanel();
+		}
+	}
+
+	if (modal instanceof HTMLDialogElement && openBtn && closeBtn) {
+		openBtn.addEventListener('click', () => {
+			modal.showModal();
+			document.body.style.overflow = 'hidden';
+			syncBookingPanelFromSession();
+		});
+
+		closeBtn.addEventListener('click', () => {
+			modal.close();
+			document.body.style.overflow = '';
+		});
+
+		// Закрытие только по клику на подложку (target === dialog), не по координатам —
+		// иначе после смены блока форма→QR клик может ошибочно считаться «снаружи».
+		modal.addEventListener('click', (e) => {
+			if (e.target === modal) {
+				modal.close();
+				document.body.style.overflow = '';
+			}
+		});
+	}
+
+	if (bookingForm && bookingSubmit && bookingError) {
+		bookingForm.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			bookingError.textContent = '';
+			bookingError.classList.add('hidden');
+			const nameInput = document.getElementById('meeting-booking-name');
+			const phoneInput = document.getElementById('meeting-booking-phone');
+			const name = nameInput instanceof HTMLInputElement ? nameInput.value.trim() : '';
+			const phone = phoneInput instanceof HTMLInputElement ? phoneInput.value.trim() : '';
+			bookingSubmit.disabled = true;
+			try {
+				// Как capsulasna.ru: POST на PHP + curl к Telegram (public/api/meeting-booking.php).
+				const res = await fetch('/api/meeting-booking.php', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ name, phone }),
+				});
+				const raw = await res.text();
+				let data = { ok: false, error: 'Нет ответа от сервера.' };
+				try {
+					data = JSON.parse(raw);
+				} catch {
+					if (!res.ok) {
+						const looksLikeHostingHtml =
+							raw.includes('<!DOCTYPE') || raw.includes('static.hostland.ru');
+						data = {
+							ok: false,
+							error: looksLikeHostingHtml
+								? 'Сервис бронирования временно не отвечает. Попробуйте через минуту или напишите нам в Telegram.'
+								: 'Сервер недоступен. Запустите npm run dev:api рядом с npm run dev.',
+						};
+					}
+				}
+				if (!res.ok || !data.ok) {
+					const msg =
+						typeof data.error === 'string' && data.error.length > 0
+							? data.error
+							: 'Не удалось сохранить заявку.';
+					throw new Error(msg);
+				}
+				try {
+					sessionStorage.setItem(SESSION_KEY, '1');
+				} catch {
+					/* ignore */
+				}
+				showBookingQrPanel();
+				void loadMeetingAttendees();
+			} catch (err) {
+				const msg = err instanceof Error ? err.message : 'Ошибка отправки.';
+				bookingError.textContent = msg;
+				bookingError.classList.remove('hidden');
+			} finally {
+				bookingSubmit.disabled = false;
+			}
+		});
+	}
+
+	function formatCountdown(ms) {
+		if (ms <= 0) return 'встреча уже началась';
+		const s = Math.floor(ms / 1000);
+		const days = Math.floor(s / 86400);
+		const h = Math.floor((s % 86400) / 3600);
+		const m = Math.floor((s % 3600) / 60);
+		const sec = s % 60;
+		const parts = [];
+		if (days > 0) parts.push(`${days} ${plural(days, 'день', 'дня', 'дней')}`);
+		parts.push(`${h} ${plural(h, 'час', 'часа', 'часов')}`);
+		parts.push(`${m} ${plural(m, 'минута', 'минуты', 'минут')}`);
+		parts.push(`${sec} ${plural(sec, 'секунда', 'секунды', 'секунд')}`);
+		return parts.join(', ');
+	}
+
+	function plural(n, one, few, many) {
+		const a = Math.abs(n) % 100;
+		const b = a % 10;
+		if (a > 10 && a < 20) return many;
+		if (b > 1 && b < 5) return few;
+		if (b === 1) return one;
+		return many;
+	}
+
+	function updateCountdown() {
+		const target = new Date(meetingIso).getTime();
+		const now = Date.now();
+		const ms = target - now;
+		const text = formatCountdown(ms);
+		const sectionEl = document.getElementById('meeting-countdown-section-value');
+		const modalEl = document.getElementById('meeting-countdown-modal-value');
+		if (sectionEl) sectionEl.textContent = text;
+		if (modalEl) modalEl.textContent = text;
+	}
+
+	function calculatePrice() {
+		const today = new Date();
+		const currentYear = today.getFullYear();
+
+		const earlyBirdEnd = new Date(currentYear, 3, 22, 23, 59, 59);
+		const standardEnd = new Date(currentYear, 3, 25, 23, 59, 59);
+
+		const currentPriceEl = document.getElementById('current-price');
+		const originalPriceEl = document.getElementById('original-price');
+		const priceMessageEl = document.getElementById('price-message');
+
+		if (!currentPriceEl || !originalPriceEl || !priceMessageEl) return;
+
+		priceMessageEl.classList.remove('text-ink-muted');
+		priceMessageEl.classList.add('text-accent');
+
+		if (today <= earlyBirdEnd) {
+			currentPriceEl.textContent = '1000 ₽';
+			originalPriceEl.textContent = '2000 ₽';
+			originalPriceEl.classList.remove('hidden');
+			priceMessageEl.textContent = 'Раннее бронирование (скидка 50%)';
+		} else if (today <= standardEnd) {
+			currentPriceEl.textContent = '1500 ₽';
+			originalPriceEl.textContent = '2000 ₽';
+			originalPriceEl.classList.remove('hidden');
+			priceMessageEl.textContent = 'Стандартная цена (скидка 25%)';
+		} else {
+			currentPriceEl.textContent = '2000 ₽';
+			originalPriceEl.classList.add('hidden');
+			priceMessageEl.textContent = 'Обычная цена';
+			priceMessageEl.classList.remove('text-accent');
+			priceMessageEl.classList.add('text-ink-muted');
+		}
+	}
+
+	calculatePrice();
+	updateCountdown();
+	setInterval(updateCountdown, 1000);
+	void loadMeetingAttendees();
+</script>

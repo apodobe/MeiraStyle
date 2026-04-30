@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://osipovastyle.ru/sitemap-index.xml

@@ -1,0 +1,134 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description: string;
+	ogImagePath?: string;
+	ogImageWidth?: number;
+	ogImageHeight?: number;
+	noindex?: boolean;
+	preloadLcpImage?: string;
+}
+
+const {
+	title,
+	description,
+	ogImagePath = '/og-image.jpg',
+	ogImageWidth = 1200,
+	ogImageHeight = 630,
+	noindex = false,
+	preloadLcpImage,
+} = Astro.props;
+
+const canonicalHref =
+	Astro.site !== undefined
+		? new URL(Astro.url.pathname, Astro.site).href
+		: Astro.url.href;
+
+const ogImageUrl =
+	Astro.site !== undefined ? new URL(ogImagePath, Astro.site).href : ogImagePath;
+
+const yandexVerificationRaw = import.meta.env.PUBLIC_YANDEX_VERIFICATION;
+const googleVerificationRaw = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const yandexVerification =
+	typeof yandexVerificationRaw === 'string' ? yandexVerificationRaw.trim() : '';
+const googleVerification =
+	typeof googleVerificationRaw === 'string' ? googleVerificationRaw.trim() : '';
+---
+
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" type="image/x-icon" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		{noindex ? <meta name="robots" content="noindex, nofollow" /> : null}
+		<link rel="canonical" href={canonicalHref} />
+		{yandexVerification ? <meta name="yandex-verification" content={yandexVerification} /> : null}
+		{
+			googleVerification ? (
+				<meta name="google-site-verification" content={googleVerification} />
+			) : null
+		}
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalHref} />
+		<meta property="og:locale" content="ru_RU" />
+		<meta property="og:site_name" content="Ирина Осипова" />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:width" content={String(ogImageWidth)} />
+		<meta property="og:image:height" content={String(ogImageHeight)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+		{
+			preloadLcpImage ? (
+				<link rel="preload" as="image" href={preloadLcpImage} fetchpriority="high" />
+			) : null
+		}
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<slot />
+		<!-- Yandex.Metrika counter -->
+		<script is:inline>
+			(function (m, e, t, r, i, k, a) {
+				m[i] =
+					m[i] ||
+					function () {
+						(m[i].a = m[i].a || []).push(arguments);
+					};
+				m[i].l = 1 * new Date();
+				for (var j = 0; j < document.scripts.length; j++) {
+					if (document.scripts[j].src === r) {
+						return;
+					}
+				}
+				(k = e.createElement(t)),
+					(a = e.getElementsByTagName(t)[0]),
+					(k.async = 1),
+					(k.src = r),
+					a.parentNode.insertBefore(k, a);
+			})(
+				window,
+				document,
+				'script',
+				'https://mc.yandex.ru/metrika/tag.js?id=108421572',
+				'ym'
+			);
+
+			ym(108421572, 'init', {
+				ssr: true,
+				webvisor: true,
+				clickmap: true,
+				ecommerce: 'dataLayer',
+				referrer: document.referrer,
+				url: location.href,
+				accurateTrackBounce: true,
+				trackLinks: true,
+			});
+		</script>
+		<noscript>
+			<div>
+				<img
+					src="https://mc.yandex.ru/watch/108421572"
+					style="position:absolute; left:-9999px;"
+					alt=""
+				/>
+			</div>
+		</noscript>
+		<!-- /Yandex.Metrika counter -->
+	</body>
+</html>

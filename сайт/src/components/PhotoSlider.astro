@@ -1,0 +1,258 @@
+---
+export interface PhotoSlide {
+	src: string;
+	alt: string;
+	caption?: string;
+	/** contain — весь кадр в рамке (широкие коллажи); по умолчанию cover */
+	fit?: 'cover' | 'contain';
+}
+
+interface Props {
+	slides: PhotoSlide[];
+	ariaLabel: string;
+	rootId: string;
+	/** Tailwind aspect-ratio для вьюпорта слайда (по умолчанию портрет 4:5) */
+	aspectClass?: string;
+	imgWidth?: number;
+	imgHeight?: number;
+	/** Классы подписи под слайдером */
+	captionClass?: string;
+}
+
+const {
+	slides,
+	ariaLabel,
+	rootId,
+	aspectClass = 'aspect-[4/5]',
+	imgWidth = 1120,
+	imgHeight = 1400,
+	captionClass = 'text-center md:text-left',
+} = Astro.props;
+---
+
+<div
+	class="photo-slider-root group/slider"
+	data-photo-slider
+	data-slider-id={rootId}
+	aria-roledescription="карусель"
+	aria-label={ariaLabel}
+>
+	<div class="border-line relative overflow-hidden rounded-[var(--radius-sm)] shadow-[var(--shadow-image)]">
+		<!--
+			Высоту задаём внешним блоком (aspect-ratio), ленту — absolute inset-0.
+			Иначе на iOS Safari flex + overflow-x + aspect на одном элементе даёт сломанную высоту,
+			h-full у img схлопывается и object-cover кропает «вблизи» случайный фрагмент кадра.
+		-->
+		<div class:list={['relative w-full', aspectClass]}>
+			<div
+				class="photo-slider-track border-line absolute inset-0 flex touch-pan-y snap-x snap-mandatory overflow-x-auto overflow-y-hidden border border-cream-300/40 bg-cream-200/50 [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 [&::-webkit-scrollbar]:hidden"
+				data-track
+				tabindex="0"
+				role="group"
+			>
+				{
+					slides.map((slide, i) => (
+						<figure
+							class:list={[
+								'photo-slider-slide relative h-full min-h-0 shrink-0 grow-0 basis-full snap-center snap-always',
+								slide.fit === 'contain' ? 'bg-cream-200/80' : '',
+							]}
+							data-slide
+							data-caption={slide.caption ?? ''}
+						>
+							<img
+								src={slide.src}
+								alt={slide.alt}
+								width={imgWidth}
+								height={imgHeight}
+								class:list={[
+									'absolute inset-0 h-full w-full object-center',
+									slide.fit === 'contain' ? 'object-contain' : 'object-cover',
+								]}
+								loading={i === 0 ? 'eager' : 'lazy'}
+								decoding="async"
+								draggable="false"
+							/>
+						</figure>
+					))
+				}
+			</div>
+		</div>
+		<div
+			class="pointer-events-none absolute inset-y-0 left-0 right-0 flex items-center justify-between px-1 md:px-2"
+			aria-hidden="true"
+		>
+			<span class="w-10 shrink-0" />
+			<span class="w-10 shrink-0" />
+		</div>
+		<button
+			type="button"
+			class="border-line bg-cream-50/95 text-ink hover:border-accent/50 hover:text-accent absolute top-1/2 left-2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border shadow-[var(--shadow-soft)] transition-colors md:left-3 md:h-10 md:w-10"
+			data-slider-prev
+			aria-label="Предыдущий снимок"
+		>
+			<span class="sr-only">Предыдущий</span>
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+				<path
+					d="M15 6l-6 6 6 6"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"></path>
+			</svg>
+		</button>
+		<button
+			type="button"
+			class="border-line bg-cream-50/95 text-ink hover:border-accent/50 hover:text-accent absolute top-1/2 right-2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border shadow-[var(--shadow-soft)] transition-colors md:right-3 md:h-10 md:w-10"
+			data-slider-next
+			aria-label="Следующий снимок"
+		>
+			<span class="sr-only">Следующий</span>
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+				<path
+					d="M9 6l6 6-6 6"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"></path>
+			</svg>
+		</button>
+	</div>
+	<div
+		class="mt-3 flex flex-wrap items-center justify-center gap-2"
+		data-dots
+		role="tablist"
+		aria-label="Выбор снимка"
+	>
+		{
+			slides.map((_, i) => (
+				<button
+					type="button"
+					class="photo-slider-dot border-line h-2.5 w-2.5 rounded-full border border-cream-300 bg-cream-200 transition-colors data-[active=true]:border-accent data-[active=true]:bg-accent"
+					data-dot={String(i)}
+					role="tab"
+					aria-selected={i === 0 ? 'true' : 'false'}
+					aria-label={`Снимок ${i + 1} из ${slides.length}`}
+				/>
+			))
+		}
+	</div>
+	<p
+		class:list={['text-taupe type-caption mt-3 min-h-[2.75rem]', captionClass]}
+		data-caption-live
+	>
+		{slides[0]?.caption ?? ''}
+	</p>
+</div>
+
+<script is:inline>
+	(function () {
+		if (typeof window !== 'undefined' && '__osipovaPhotoSlider' in window) return;
+		if (typeof window !== 'undefined') window.__osipovaPhotoSlider = true;
+
+		function prefersReducedMotion() {
+			return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		}
+
+		function getSlideWidth(track) {
+			var first = track.querySelector('[data-slide]');
+			if (first && first.offsetWidth > 0) return first.offsetWidth;
+			return track.clientWidth;
+		}
+
+		function scrollToIndex(track, index) {
+			var w = getSlideWidth(track);
+			var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+			track.scrollTo({ left: index * w, behavior: behavior });
+		}
+
+		function getIndex(track) {
+			var w = getSlideWidth(track);
+			if (w <= 0) return 0;
+			return Math.round(track.scrollLeft / w);
+		}
+
+		function setDots(root, index) {
+			var dots = root.querySelectorAll('[data-dot]');
+			dots.forEach(function (dot, i) {
+				var active = i === index;
+				dot.setAttribute('data-active', active ? 'true' : 'false');
+				dot.setAttribute('aria-selected', active ? 'true' : 'false');
+			});
+		}
+
+		function setCaption(root, index) {
+			var slides = root.querySelectorAll('[data-slide]');
+			var live = root.querySelector('[data-caption-live]');
+			var fig = slides[index];
+			if (!live || !fig) return;
+			var cap = fig.getAttribute('data-caption') || '';
+			live.textContent = cap;
+		}
+
+		function initSlider(root) {
+			var track = root.querySelector('[data-track]');
+			var prev = root.querySelector('[data-slider-prev]');
+			var next = root.querySelector('[data-slider-next]');
+			if (!track || !prev || !next) return;
+
+			var slideCount = root.querySelectorAll('[data-slide]').length;
+			if (slideCount === 0) return;
+
+			var scrollEndTimer;
+
+			function sync() {
+				var idx = Math.max(0, Math.min(slideCount - 1, getIndex(track)));
+				setDots(root, idx);
+				setCaption(root, idx);
+			}
+
+			prev.addEventListener('click', function () {
+				var idx = getIndex(track);
+				scrollToIndex(track, Math.max(0, idx - 1));
+			});
+			next.addEventListener('click', function () {
+				var idx = getIndex(track);
+				scrollToIndex(track, Math.min(slideCount - 1, idx + 1));
+			});
+
+			root.querySelectorAll('[data-dot]').forEach(function (dot) {
+				dot.addEventListener('click', function () {
+					var raw = dot.getAttribute('data-dot');
+					var i = raw ? parseInt(raw, 10) : 0;
+					if (!isNaN(i)) scrollToIndex(track, i);
+				});
+			});
+
+			track.addEventListener('scroll', function () {
+				window.clearTimeout(scrollEndTimer);
+				scrollEndTimer = window.setTimeout(sync, 64);
+			});
+
+			track.addEventListener('keydown', function (e) {
+				if (e.key === 'ArrowLeft') {
+					e.preventDefault();
+					scrollToIndex(track, Math.max(0, getIndex(track) - 1));
+				} else if (e.key === 'ArrowRight') {
+					e.preventDefault();
+					scrollToIndex(track, Math.min(slideCount - 1, getIndex(track) + 1));
+				}
+			});
+
+			window.addEventListener('resize', sync);
+			sync();
+		}
+
+		function initAll() {
+			document.querySelectorAll('[data-photo-slider]').forEach(function (el) {
+				initSlider(el);
+			});
+		}
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', initAll);
+		} else {
+			initAll();
+		}
+	})();
+</script>

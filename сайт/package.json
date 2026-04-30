@@ -1,0 +1,35 @@
+{
+  "name": "osipovastyle.ru",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "dev:api": "node scripts/dev-booking-api.cjs",
+    "build": "node scripts/generate-favicon.mjs && astro build && node scripts/postbuild-hosting.mjs",
+    "preview": "astro preview",
+    "astro": "astro",
+    "deploy": "npm run build && node scripts/deploy-ftp.mjs",
+    "generate:og": "node scripts/generate-og.mjs",
+    "generate:telegram": "node scripts/composite-telegram-announcement.mjs",
+    "generate:telegram-poster": "node scripts/composite-poster-lecturer.mjs",
+    "export:visitka": "node scripts/export-visitka.mjs",
+    "export:pdf": "npm run build && node scripts/export-pdf.mjs",
+    "photos:process": "node scripts/split-showroom-collage.mjs && node scripts/process-site-photos.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^6.1.4",
+    "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "basic-ftp": "^5.2.0",
+    "pdf-lib": "^1.17.1",
+    "png-to-ico": "^3.0.1",
+    "puppeteer": "^24.40.0",
+    "sharp": "^0.34.5"
+  }
+}

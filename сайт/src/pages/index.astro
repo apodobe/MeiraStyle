@@ -1,0 +1,736 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PhotoSlider from '../components/PhotoSlider.astro';
+import NextMeeting from '../components/NextMeeting.astro';
+
+const img = '/images/site';
+
+const pageTitle =
+	'Ирина Осипова — лекции и мастер-классы по стилю для брендов и школ';
+const pageDescription =
+	'Персональный стилист, лектор и ведущая воркшопов: капсула, цвет и фигура, шопинг, тренды. Форматы для шоурумов, школ и онлайн-курсов. Опыт 8 лет, в том числе Lamoda и проекты с Uniqlo.';
+
+const phoneDisplay = '+7 916 585 58 36';
+const phoneE164 = '+79165855836';
+const phoneHref = 'tel:+79165855836';
+const whatsappHref = 'https://wa.me/79165855836';
+
+const telegramUsername = 'meiraosipova';
+const telegramHref = `https://t.me/${telegramUsername}`;
+
+const audiences = [
+	{
+		title: 'Шоурумы',
+		text: 'Клиентские дни, презентации коллекций, практика на вещах из ассортимента. Визуализация полок зонами, чек-листы для продавцов.',
+	},
+	{
+		title: 'Офлайн-школы стиля',
+		text: 'Лекции и мастер-классы с разбором кейсов и живым контактом с аудиторией.',
+	},
+	{
+		title: 'Курсы стиля',
+		text: 'Тематические модули и гостевые занятия в рамках вашей программы.',
+	},
+	{
+		title: 'Онлайн-школы',
+		text: 'Вебинары и трансляции с презентацией и блоком ответов на вопросы. Разбор актуальных кейсов у аудитории.',
+	},
+];
+
+const topics = [
+	{
+		title: '«Я устала думать об одежде»: капсула, которая работает без мозга',
+		text: '',
+	},
+	{
+		title: '«Стиль = дорого?»: как выглядеть на миллион в масс-маркете (опыт Uniqlo + Lamoda)',
+		text: '',
+	},
+	{
+		title: '«Я не знаю, что мне идет»: быстрая диагностика типажа без сложных таблиц',
+		text: '',
+	},
+	{
+		title: 'Основы и психология стиля',
+		text: '',
+	},
+	{
+		title: '«После 40 я стала невидимкой»: как вернуть взгляды и уважение без омоложения',
+		text: '',
+	},
+];
+
+const formats = [
+	{
+		title: 'Лекция',
+		duration: '30 мин — 1,5 часа',
+		text: 'Теория, презентация, ответы на вопросы. Подходит для клиентских дней и открытых встреч.',
+	},
+	{
+		title: 'Воркшоп / практикум',
+		duration: '2–3 часа',
+		text: 'Отработка навыков на моделях или вещах из вашей коллекции — актуально для шоурумов.',
+	},
+	{
+		title: 'Интенсив',
+		duration: '2–3 дня',
+		text: 'Глубокое погружение в тему с домашними заданиями и сопровождением.',
+	},
+	{
+		title: 'Вебинар',
+		duration: 'Онлайн',
+		text: 'Трансляция для вашей аудитории с возможностью записи и разбора вопросов в чате.',
+	},
+];
+
+const heroImage = `${img}/hero-irina.webp`;
+
+const lectureSlides = [
+	{
+		src: `${img}/lecture-woman-weekend.webp`,
+		alt: 'Лекция на площадке Woman Weekend: спикер у экрана, зал с гостями за столами и в креслах',
+		caption:
+			'Живой формат: большой экран с программой и темой выступления, зал и контакт с аудиторией в одном кадре.',
+	},
+	{
+		src: `${img}/lecture-auditorium.webp`,
+		alt: 'Живое мероприятие в светлом зале: гости за круглыми столами',
+		caption:
+			'Формат живой встречи: просторный зал, круглые столы и атмосфера, в которой удобно и слушать, и общаться.',
+	},
+	{
+		src: `${img}/lecture-gathering.webp`,
+		alt: 'Ведущие мероприятия в зале лектория или семинара',
+		caption:
+			'Люди и пространство встречи: можно задать вопрос после блока или просто остаться в контакте с темой.',
+	},
+	{
+		src: `${img}/lecture-group-celebration.webp`,
+		alt: 'Лекция на сцене: экран с темой про дресс-код и создание образа, практика за столами',
+		caption:
+			'Теория на экране и практика в зале: тема «дресс-код и создание своего лучшего образа» в одном кадре.',
+	},
+];
+
+const practiceModelSlides = [
+	{
+		src: `${img}/model-editorial-cards.webp`,
+		alt: 'Стилизованный портрет модели с игральными картами, яркий макияж и куртка в клетку',
+		caption:
+			'Съёмочный образ с характером: реквизит, макияж и одежда собраны в единую визуальную историю.',
+	},
+	{
+		src: `${img}/model-editorial-tonal.webp`,
+		alt: 'Полный рост: цветочное платье, тренч на плечах, студийный коричневый фон',
+		caption:
+			'Студийный кадр для бренда: силуэт, принт и верхний слой читаются с первого взгляда.',
+	},
+	{
+		src: `${img}/model-editorial-portrait.webp`,
+		alt: 'Редакционный образ: белая рубашка и многоярусная юбка с металлизированным узором',
+		caption:
+			'Спокойная палитра и фактуры — образ для лукбука, каталога или презентации коллекции.',
+	},
+	{
+		src: `${img}/model-styling-session.webp`,
+		alt: 'Профиль модели: комбинация атласного платья и объёмного пиджака в клетку',
+		caption:
+			'Микс стилей в одном луке: женственное платье и мужской крой — собрано в цельный образ.',
+	},
+	{
+		src: `${img}/model-before-after.webp`,
+		alt: 'До и после стилизации: одна модель в двух образах в коридоре магазина',
+		caption:
+			'Трансформация на площадке ритейла: тот же человек — другой силуэт, баланс и акценты.',
+		fit: 'contain',
+	},
+	{
+		src: `${img}/model-editorial-roses.webp`,
+		alt: 'Кампейный кадр: модель в принте с розами на светлом деревянном фоне',
+		caption:
+			'Романтичный визуал для кампании или соцсетей: цвет, свет и настроение в одном кадре.',
+	},
+];
+
+const practiceShowroomSlides = [
+	{
+		src: `${img}/showroom-evening-wear.webp`,
+		alt: 'Интерьер шоурума: манекен в вечернем платье, вешалки с нарядами',
+		caption: 'Вечерняя и коктейльная линия в шоуруме — контекст для клиентских дней.',
+	},
+	{
+		src: `${img}/showroom-boutique-floor.webp`,
+		alt: 'Панорама бутика: рельсы с одеждой, мраморный пол, подсветка',
+		caption: 'Пространство бренда: витрина, рельсы и атмосфера, в которой удобно учиться.',
+	},
+];
+
+const siteOrigin = Astro.site?.origin ?? 'https://osipovastyle.ru';
+const siteUrl = `${siteOrigin}/`;
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'WebSite',
+			'@id': `${siteUrl}#website`,
+			url: siteUrl,
+			name: 'Ирина Осипова',
+			description: pageDescription,
+			inLanguage: 'ru-RU',
+		},
+		{
+			'@type': 'Person',
+			'@id': `${siteUrl}#person`,
+			name: 'Ирина Осипова',
+			jobTitle: 'Стилист, лектор',
+			description: pageDescription,
+			url: siteUrl,
+			telephone: phoneE164,
+			sameAs: [telegramHref],
+			knowsAbout: [
+				...topics.map((t) => t.title),
+				'Персональный стиль',
+				'Имиджмейкинг',
+				'Лекции по моде',
+			],
+		},
+	],
+};
+---
+
+<Layout
+	title={pageTitle}
+	description={pageDescription}
+	ogImagePath="/og-image.jpg"
+	ogImageWidth={1200}
+	ogImageHeight={630}
+	preloadLcpImage={heroImage}
+>
+	<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	<a
+		href="#main"
+		class="sr-only rounded-[var(--radius-sm)] focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-cream-50 focus:px-3 focus:py-2 focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2"
+		>Перейти к содержимому</a
+	>
+
+	<header class="border-line sticky top-0 z-40 border-b bg-cream-50/92 backdrop-blur-md">
+		<div
+			class="mx-auto flex max-w-content flex-col gap-3 py-4 md:flex-row md:items-center md:justify-between md:gap-8 md:py-4 gutter-x"
+		>
+			<div class="flex w-full items-center justify-between md:w-auto md:justify-start md:gap-0">
+				<a
+					href="/"
+					class="group flex items-center gap-3 no-underline outline-offset-4"
+					aria-label="Ирина Осипова — на главную"
+				>
+					<span
+						class="font-serif flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-line bg-cream-100 text-sm font-semibold tracking-tight text-ink transition-colors group-hover:border-accent/40 group-hover:text-accent"
+						aria-hidden="true">ИО</span
+					>
+					<span class="border-line hidden h-9 w-px shrink-0 bg-[var(--color-line)] sm:block" aria-hidden="true"
+					></span>
+					<span class="font-serif text-ink text-lg tracking-[0.14em] md:text-xl">
+						Ирина <span class="text-taupe-dark font-normal tracking-[0.22em]">Осипова</span>
+					</span>
+				</a>
+				<div class="flex shrink-0 items-center gap-2 md:hidden">
+					<a
+						href={whatsappHref}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="bg-accent text-cream-50 hover:bg-accent-hover inline-flex items-center justify-center rounded-full px-3.5 py-2.5 text-sm font-semibold shadow-[var(--shadow-soft)] transition-colors"
+						>WhatsApp</a
+					>
+					<a
+						href={telegramHref}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="border-line text-ink hover:border-accent hover:text-accent inline-flex items-center justify-center rounded-full border-2 border-[var(--color-line)] bg-cream-50/90 px-3.5 py-2.5 text-sm font-semibold transition-colors"
+						>Telegram</a
+					>
+				</div>
+			</div>
+			<nav
+				class="text-ink-muted flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium md:flex-1 md:justify-center md:gap-8"
+				aria-label="Разделы"
+			>
+				<a href="#audience" data-nav-section="audience" class="nav-link text-ink-muted">Для кого</a>
+				<a href="#portfolio" data-nav-section="portfolio" class="nav-link text-ink-muted"
+					>Портфолио</a
+				>
+				<a href="#topics" data-nav-section="topics" class="nav-link text-ink-muted">Темы</a>
+				<a href="#formats" data-nav-section="formats" class="nav-link text-ink-muted">Форматы</a>
+				<a href="#contact" data-nav-section="contact" class="nav-link text-ink-muted"
+					>Связаться</a
+				>
+			</nav>
+			<div class="hidden shrink-0 items-center gap-2 md:flex">
+				<a
+					href={whatsappHref}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="bg-accent text-cream-50 hover:bg-accent-hover inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold shadow-[var(--shadow-soft)] transition-colors"
+					>WhatsApp</a
+				>
+				<a
+					href={telegramHref}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="border-line text-ink hover:border-accent hover:text-accent inline-flex items-center justify-center rounded-full border-2 border-[var(--color-line)] bg-cream-50/90 px-5 py-2.5 text-sm font-semibold transition-colors"
+					>Telegram</a
+				>
+			</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<section
+			class="border-line hero-pattern relative overflow-hidden border-b"
+			aria-labelledby="hero-heading"
+		>
+			<div
+				class="mx-auto grid max-w-content gap-10 gutter-x section-y md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.92fr)] md:items-center md:gap-x-12 md:gap-y-14"
+			>
+				<div class="animate-fade-up relative md:pl-2">
+					<span
+						class="bg-accent/85 absolute -left-1 top-2 hidden h-[4.5rem] w-[3px] rounded-full md:block"
+						aria-hidden="true"></span>
+					<p
+						class="text-accent-hover type-caption mb-4 font-semibold uppercase tracking-[0.22em]"
+					>
+						Стилист · Лектор
+					</p>
+					<h1 id="hero-heading" class="type-hero text-ink mb-6">
+						Лекции и мастер-классы по стилю для вашей аудитории
+					</h1>
+					<p class="text-ink-muted type-lead mb-8 max-w-[40ch]">
+						Совместные мероприятия для шоурумов, школ стиля и образовательных проектов —
+						с опорой на практику и бережный контакт с участниками.
+					</p>
+					<div class="flex flex-wrap gap-3">
+						<a
+							href="#contact"
+							class="bg-ink text-cream-50 hover:bg-accent inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold tracking-wide shadow-[var(--shadow-soft)] transition-colors"
+							>Обсудить формат</a
+						>
+						<a
+							href="#topics"
+							class="border-line text-ink hover:border-accent hover:text-accent inline-flex items-center justify-center rounded-full border-2 border-[var(--color-line)] bg-transparent px-6 py-3 text-sm font-semibold transition-colors"
+							>Смотреть темы</a
+						>
+					</div>
+				</div>
+				<div class="animate-fade-up animate-delay-1 relative md:translate-y-3">
+					<div class="frame-portrait relative aspect-[4/5] w-full overflow-hidden">
+						<img
+							src={heroImage}
+							alt="Ирина Осипова — стилист, лектор и ведущая воркшопов"
+							width="1120"
+							height="1400"
+							class="absolute inset-0 h-full w-full object-cover object-center"
+							loading="eager"
+							decoding="async"
+							fetchpriority="high"
+						/>
+					</div>
+					<p
+						class="text-taupe type-caption mt-4 max-w-[28ch] text-center md:ml-auto md:text-right"
+					>
+						Стилист Ирина Осипова
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section
+			id="audience"
+			class="border-line section-y border-b bg-cream-50"
+			aria-labelledby="audience-heading"
+		>
+			<div class="mx-auto max-w-content gutter-x">
+				<div class="mx-auto mb-12 max-w-2xl text-center">
+					<h2 id="audience-heading" class="type-section-title text-ink mb-4 text-balance">
+						Для организаций, которые делятся знаниями о моде и стиле
+					</h2>
+					<p class="text-ink-muted type-lead text-pretty">
+						Ключевой фокус — лекции, мастер-классы и практикумы. Исключительно индивидуальный
+						подход к каждому запросу от аудитории.
+					</p>
+				</div>
+				<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+					{
+						audiences.map((item, i) => (
+							<li
+								class:list={[
+									'audience-card flex flex-col rounded-[var(--radius-md)] border p-6 transition-shadow duration-300',
+									i === 1 &&
+										'border-accent/45 border-l-[3px] border-l-accent bg-cream-50 shadow-[var(--shadow-soft)]',
+									i !== 1 && i % 2 === 0 && 'border-line bg-cream-100/75',
+									i !== 1 && i % 2 === 1 && 'border-cream-300/90 bg-cream-100/40',
+								]}
+							>
+								<span
+									class="font-serif text-accent mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-accent/35 text-sm font-semibold"
+									aria-hidden="true"
+								>
+									{String(i + 1).padStart(2, '0')}
+								</span>
+								<h3 class="font-serif text-ink mb-2 text-xl font-medium leading-snug">
+									{item.title}
+								</h3>
+								<p class="text-ink-muted text-sm leading-relaxed">{item.text}</p>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section
+			id="collab"
+			class="border-line section-y relative overflow-hidden border-b bg-cream-100"
+			aria-labelledby="collab-heading"
+		>
+			<div
+				class="pointer-events-none absolute left-4 top-6 select-none font-serif text-[clamp(4rem,14vw,7rem)] leading-none text-accent/12 md:left-10 md:top-10"
+				aria-hidden="true"
+			>
+				«
+			</div>
+			<div
+				class="from-cream-50/80 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent to-cream-200/50"
+				aria-hidden="true"
+			>
+			</div>
+			<div class="relative mx-auto max-w-content gutter-x">
+				<div
+					class="border-accent/50 mx-auto max-w-[52ch] border-l-[3px] pl-8 md:pl-10"
+				>
+					<h2
+						id="collab-heading"
+						class="type-section-title text-ink mb-6 text-center text-balance"
+					>
+						Совместное мероприятие под вашу аудиторию
+					</h2>
+					<p class="text-ink-muted type-lead mb-6 text-pretty leading-relaxed">
+						Меня зовут Ирина. И я стилист с опытом работы 8 лет:
+					</p>
+					<ul class="text-ink-muted type-lead list-none space-y-5 text-pretty leading-relaxed pl-0">
+						<li class="flex gap-3">
+							<span class="shrink-0 select-none" aria-hidden="true">✅</span>
+							<span>
+								<strong class="text-ink font-medium">Практика с гигантами индустрии.</strong>{' '}
+								Работа на Lamoda научила меня видеть вещи так, как их видят профессиональные
+								байеры и редакторы моды. А совместные проекты с Uniqlo — доказывают, что стиль
+								возможен в любом бюджете.
+							</span>
+						</li>
+						<li class="flex gap-3">
+							<span class="shrink-0 select-none" aria-hidden="true">✅</span>
+							<span>
+								<strong class="text-ink font-medium">8 лет в персональном стайлинге.</strong>{' '}
+								За моими плечами женщины, которые пришли в отчаянии («всё купила, ничего не
+								ношу») и ушли с чёткой матрицей: знают свои цвета, силуэты, бренды и магазины.
+							</span>
+						</li>
+						<li class="flex gap-3">
+							<span class="shrink-0 select-none" aria-hidden="true">✅</span>
+							<span>
+								<strong class="text-ink font-medium">Авторская система обучения.</strong>{' '}
+								Мои лекции и мастер-классы — это чёткая структура, без воды. Вы не просто
+								слушаете, вы уже через час начинаете применять.
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section
+			class="border-line section-y border-b bg-cream-50"
+			aria-labelledby="about-heading"
+		>
+			<div
+				class="mx-auto grid max-w-content items-center gap-12 gutter-x md:grid-cols-2 md:gap-x-16 md:gap-y-10"
+			>
+				<div class="order-2 flex justify-center md:order-1">
+					<div class="mx-auto max-w-[52ch] w-full text-center">
+						<span
+							class="bg-accent mx-auto mb-5 block h-[2px] w-10 rounded-full md:mb-6 md:w-12"
+							aria-hidden="true"></span>
+						<h2 id="about-heading" class="type-section-title text-ink mb-6 text-balance">
+							Лекции и практика
+						</h2>
+						<p class="text-ink-muted mb-4 text-pretty leading-relaxed">
+							Веду лекции и мастер-классы по стилю и моде: от базовой теории до разбора
+							образов и работы с коллекцией. Важно не только «что носить», но и как объяснить
+							это так, чтобы слушателям было ясно и спокойно пробовать на себе.
+						</p>
+						<p class="text-ink-muted text-pretty leading-relaxed">
+							Краткое портфолио можно запросить при первом контакте — с радостью направлю
+							материалы, релевантные вашему формату.
+						</p>
+					</div>
+				</div>
+				<div class="order-1 flex justify-center md:order-2">
+					<div class="mx-auto w-full max-w-xl">
+						<PhotoSlider
+							rootId="lecture"
+							ariaLabel="Лекции и групповые занятия"
+							slides={lectureSlides}
+							aspectClass="aspect-[4/3]"
+							imgWidth={1200}
+							imgHeight={900}
+							captionClass="text-center"
+						/>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<NextMeeting />
+
+		<section
+			id="topics"
+			class="border-line section-y bg-cream-100"
+			aria-labelledby="topics-heading"
+		>
+			<div class="mx-auto max-w-content gutter-x">
+				<div class="mx-auto mb-12 max-w-3xl text-center">
+					<h2 id="topics-heading" class="type-section-title text-ink mb-4 text-balance">
+						Темы, которые можем раскрыть
+					</h2>
+					<p class="text-ink-muted type-lead text-pretty">
+						Названия — отправная точка; содержание подстраиваю под уровень и запрос аудитории.
+					</p>
+				</div>
+				<ul class="mx-auto max-w-3xl space-y-5">
+					{
+						topics.map((topic, i) => (
+							<li
+								class="topic-card border-line rounded-[var(--radius-md)] border border-cream-300/70 bg-cream-50/90 p-6 text-center md:p-7"
+							>
+								<div class="flex flex-col items-center gap-3">
+									<span
+										class="font-serif text-accent text-xl font-semibold tabular-nums leading-none md:text-2xl"
+										aria-hidden="true"
+									>
+										{String(i + 1).padStart(2, '0')}
+									</span>
+									<div class="max-w-prose">
+										<h3 class="font-serif text-ink text-lg font-medium leading-snug md:text-xl">
+											{topic.title}
+										</h3>
+										{topic.text ? (
+											<p class="text-ink-muted mt-2 text-sm leading-relaxed">{topic.text}</p>
+										) : null}
+									</div>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section
+			id="portfolio"
+			class="border-line section-y scroll-mt-24 border-b bg-cream-50 md:scroll-mt-28"
+			aria-labelledby="portfolio-heading"
+		>
+			<div class="mx-auto max-w-content gutter-x">
+				<div class="mx-auto mb-12 max-w-3xl text-center">
+					<h2 id="portfolio-heading" class="type-section-title text-ink mb-4 text-balance">
+						Портфолио
+					</h2>
+					<p class="text-ink-muted type-lead text-pretty">
+						Кадры с образами, съёмок и площадок брендов — чтобы было видно, как выглядит работа
+						«в поле», не только на слайдах.
+					</p>
+				</div>
+				<div class="grid gap-12 lg:grid-cols-2 lg:gap-x-14 lg:gap-y-8">
+					<div>
+						<h3 class="font-serif text-ink mb-4 text-center text-xl font-medium">
+							Образы и стилизация
+						</h3>
+						<PhotoSlider
+							rootId="models"
+							ariaLabel="Слайдер: образы на моделях и до-после стилизации"
+							slides={practiceModelSlides}
+						/>
+					</div>
+					<div>
+						<h3 class="font-serif text-ink mb-4 text-center text-xl font-medium">
+							Шоурумы и бутики
+						</h3>
+						<PhotoSlider
+							rootId="showroom"
+							ariaLabel="Слайдер: интерьеры шоурумов и торговых пространств"
+							slides={practiceShowroomSlides}
+						/>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section
+			id="formats"
+			class="border-line section-y border-b bg-cream-100"
+			aria-labelledby="formats-heading"
+		>
+			<div class="mx-auto max-w-content gutter-x">
+				<h2
+					id="formats-heading"
+					class="type-section-title text-ink mx-auto mb-12 max-w-[28ch] text-center text-balance"
+				>
+					Форматы взаимодействия
+				</h2>
+				<ol class="formats-timeline relative grid gap-6 md:grid-cols-2 md:gap-x-12 md:gap-y-8">
+					{
+						formats.map((f, i) => (
+							<li class="border-line audience-card relative overflow-hidden rounded-[var(--radius-md)] border bg-cream-100/60 p-8 pt-12 md:p-9 md:pt-14">
+								<span
+									class="font-serif text-accent/18 pointer-events-none absolute -right-2 -top-1 text-[5.5rem] font-light leading-none select-none md:text-[6rem]"
+									aria-hidden="true"
+								>
+									{String(i + 1).padStart(2, '0')}
+								</span>
+								<span
+									class="font-serif text-accent/55 absolute left-8 top-5 text-2xl font-medium tabular-nums md:left-9 md:top-7 md:text-3xl"
+									aria-hidden="true"
+								>
+									{String(i + 1).padStart(2, '0')}
+								</span>
+								<div class="relative z-[1]">
+									<h3 class="font-serif text-ink mb-3 text-2xl font-medium">{f.title}</h3>
+									<p
+										class="bg-accent-muted text-accent-hover type-caption mb-4 inline-block rounded-full px-3 py-1 font-bold uppercase tracking-[0.14em]"
+									>
+										{f.duration}
+									</p>
+									<p class="text-ink-muted text-sm leading-relaxed">{f.text}</p>
+								</div>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</section>
+
+		<section
+			id="contact"
+			class="contact-surface text-cream-100 section-y relative overflow-hidden"
+			aria-labelledby="contact-heading"
+		>
+			<div class="contact-noise" aria-hidden="true"></div>
+			<div class="relative mx-auto max-w-3xl gutter-x text-center md:px-8">
+				<h2 id="contact-heading" class="type-section-title mb-4 text-cream-50">
+					Обсудим дату и формат?
+				</h2>
+				<p class="mb-10 text-lg leading-relaxed text-cream-200/95">
+					Напишите, кто вы — шоурум, школа или курс — и что хотите дать аудитории. Отвечу с
+					вариантами программы и ориентиром по срокам.
+				</p>
+				<div class="flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
+					<a
+						href={whatsappHref}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="bg-accent text-cream-50 hover:bg-accent-hover inline-flex min-w-[200px] items-center justify-center rounded-full px-8 py-3.5 text-sm font-bold tracking-wide shadow-[var(--shadow-lift)] transition-colors"
+						>WhatsApp</a
+					>
+					<a
+						href={phoneHref}
+						class="border-cream-200/55 text-cream-50 hover:bg-cream-50/12 inline-flex min-w-[200px] items-center justify-center rounded-full border-2 px-8 py-3.5 text-sm font-semibold transition-colors"
+						>{phoneDisplay}</a
+					>
+					<a
+						href={telegramHref}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="border-cream-200/55 text-cream-50 hover:bg-cream-50/12 inline-flex min-w-[200px] items-center justify-center rounded-full border-2 px-8 py-3.5 text-sm font-semibold transition-colors"
+						>Telegram</a
+					>
+				</div>
+				<p
+					class="text-cream-300/90 type-caption mt-12 font-medium uppercase tracking-[0.28em]"
+				>
+					Ирина Осипова · стилист, лектор · {phoneDisplay} · @{telegramUsername}
+				</p>
+			</div>
+		</section>
+	</main>
+
+	<footer class="border-line footer-pattern border-t py-10">
+		<div
+			class="text-ink-muted mx-auto flex max-w-content flex-col items-center gap-6 gutter-x text-sm md:flex-row md:justify-between"
+		>
+			<div class="flex flex-col items-center gap-3 md:items-start">
+				<p class="font-serif text-ink text-base tracking-wide">Ирина Осипова</p>
+				<nav
+					class="text-taupe-dark flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs font-medium uppercase tracking-[0.2em] md:justify-start"
+					aria-label="Быстрые ссылки"
+				>
+					<a href="#audience" class="hover:text-accent transition-colors">Для кого</a>
+					<span class="text-taupe/40" aria-hidden="true">·</span>
+					<a href="#portfolio" class="hover:text-accent transition-colors">Портфолио</a>
+					<span class="text-taupe/40" aria-hidden="true">·</span>
+					<a href="#topics" class="hover:text-accent transition-colors">Темы</a>
+					<span class="text-taupe/40" aria-hidden="true">·</span>
+					<a href="#formats" class="hover:text-accent transition-colors">Форматы</a>
+					<span class="text-taupe/40" aria-hidden="true">·</span>
+					<a href="#contact" class="hover:text-accent transition-colors">Связь</a>
+				</nav>
+			</div>
+			<p class="text-center md:text-right">
+				© {new Date().getFullYear()} · Лекции · воркшопы · онлайн
+			</p>
+		</div>
+	</footer>
+
+	<script is:inline>
+		(function () {
+			function initNav() {
+				var sections = ['audience', 'topics', 'portfolio', 'formats', 'contact'];
+				var links = document.querySelectorAll('a[data-nav-section]');
+				if (!links.length || typeof IntersectionObserver === 'undefined') return;
+
+				var ratios = {};
+				var observer = new IntersectionObserver(
+					function (entries) {
+						entries.forEach(function (entry) {
+							ratios[entry.target.id] = entry.intersectionRatio;
+						});
+						var bestId = null;
+						var bestRatio = 0;
+						sections.forEach(function (id) {
+							var r = ratios[id] || 0;
+							if (r > bestRatio) {
+								bestRatio = r;
+								bestId = id;
+							}
+						});
+						if (!bestId || bestRatio < 0.12) return;
+						links.forEach(function (a) {
+							var sec = a.getAttribute('data-nav-section');
+							a.classList.toggle('is-active', sec === bestId);
+						});
+					},
+					{ threshold: [0, 0.1, 0.2, 0.35, 0.5], rootMargin: '-72px 0px -52% 0px' }
+				);
+
+				sections.forEach(function (id) {
+					var el = document.getElementById(id);
+					if (el) observer.observe(el);
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initNav);
+			} else {
+				initNav();
+			}
+		})();
+	</script>
+</Layout>
