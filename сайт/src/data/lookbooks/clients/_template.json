@@ -1,0 +1,25 @@
+{
+	"slug": "client-slug",
+	"clientName": "Имя клиента",
+	"title": "Подбор образов",
+	"dateLabel": "10 июня 2026",
+	"intro": "Короткий комментарий стилиста: контекст, задача, на что обратить внимание.",
+	"outfits": [
+		{
+			"id": "look-1",
+			"title": "Образ 1 — название",
+			"note": "Комментарий к образу: с чем сочетать, для какого случая.",
+			"image": "/images/lookbook/client-slug/look-1.webp",
+			"items": [
+				{
+					"id": "item-1",
+					"name": "Название вещи",
+					"brand": "Бренд",
+					"url": "https://example.com/product",
+					"price": null,
+					"image": "/images/lookbook/client-slug/item-1.webp"
+				}
+			]
+		}
+	]
+}

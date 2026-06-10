@@ -1,0 +1,277 @@
+---
+import type { Lookbook, LookbookItem, LookbookOutfit } from '../../data/lookbooks/types';
+import LookbookLightbox from './LookbookLightbox.astro';
+import LookbookOutfitGallery from './LookbookOutfitGallery.astro';
+
+interface Props {
+	lookbook: Lookbook;
+}
+
+const { lookbook } = Astro.props;
+const lightboxId = `lookbook-${lookbook.slug}`;
+
+interface LightboxSlide {
+	src: string;
+	alt: string;
+	caption?: string;
+}
+
+const lightboxSlides: LightboxSlide[] = [];
+const lightboxIndexBySrc = new Map<string, number>();
+
+function registerLightboxSlide(src: string, alt: string, caption?: string): number {
+	const existing = lightboxIndexBySrc.get(src);
+	if (existing !== undefined) return existing;
+	const index = lightboxSlides.length;
+	lightboxIndexBySrc.set(src, index);
+	lightboxSlides.push({ src, alt, caption });
+	return index;
+}
+
+function outfitImages(outfit: LookbookOutfit): string[] {
+	if (outfit.images && outfit.images.length > 0) return outfit.images;
+	if (outfit.image) return [outfit.image];
+	return [];
+}
+
+for (const outfit of lookbook.outfits) {
+	for (const src of outfitImages(outfit)) {
+		registerLightboxSlide(src, outfit.title, outfit.title);
+	}
+	for (const item of outfit.items) {
+		if (item.image) {
+			registerLightboxSlide(
+				item.image,
+				item.name,
+				[item.name, item.brand].filter(Boolean).join(' · ')
+			);
+		}
+	}
+}
+
+function formatPrice(item: LookbookItem): string | null {
+	if (item.priceLabel) return item.priceLabel;
+	if (typeof item.price === 'number' && item.price > 0) {
+		return new Intl.NumberFormat('ru-RU', {
+			style: 'currency',
+			currency: 'RUB',
+			maximumFractionDigits: 0,
+		}).format(item.price);
+	}
+	return null;
+}
+
+function outfitTotal(items: LookbookItem[]): number {
+	return items.reduce((sum, item) => {
+		if (typeof item.price === 'number' && item.price > 0) return sum + item.price;
+		return sum;
+	}, 0);
+}
+
+const allItems = lookbook.outfits.flatMap((o) => o.items);
+const grandTotal = outfitTotal(allItems);
+const pricedCount = allItems.filter((i) => typeof i.price === 'number' && i.price > 0).length;
+---
+
+<article class="min-h-dvh bg-cream-50 pb-20 sm:pb-16" data-lookbook-content hidden>
+	<header class="border-b border-line bg-cream-100/80 px-4 py-7 backdrop-blur-sm sm:px-6 sm:py-8">
+		<p class="text-xs font-medium uppercase tracking-[0.2em] text-taupe">Ирина Осипова · стилист</p>
+		<h1 class="mt-3 font-serif text-[clamp(1.75rem,5vw,2.25rem)] leading-tight text-ink">{lookbook.title}</h1>
+		<p class="mt-2 text-lg text-ink-muted">{lookbook.clientName}</p>
+		{lookbook.dateLabel ? <p class="mt-1 text-sm text-taupe">{lookbook.dateLabel}</p> : null}
+		{
+			lookbook.intro ? (
+				<p class="mt-5 max-w-2xl text-[0.98rem] leading-relaxed text-ink-muted">{lookbook.intro}</p>
+			) : null
+		}
+		{
+			pricedCount > 0 ? (
+				<p class="mt-5 inline-block max-w-full rounded-full bg-accent-muted px-4 py-1.5 text-sm text-ink">
+					Ориентир:{' '}
+					<span class="font-medium">
+						{new Intl.NumberFormat('ru-RU', {
+							style: 'currency',
+							currency: 'RUB',
+							maximumFractionDigits: 0,
+						}).format(grandTotal)}
+					</span>
+					<span class="text-taupe"> · {pricedCount}/{allItems.length} с ценой</span>
+				</p>
+			) : null
+		}
+	</header>
+
+	<nav
+		class="sticky top-0 z-10 border-b border-line bg-cream-50/95 px-4 py-2.5 backdrop-blur-sm sm:px-6 sm:py-3"
+		data-lookbook-nav
+	>
+		<ul class="flex gap-2 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+			{
+				lookbook.outfits.map((outfit, index) => (
+					<li class="shrink-0">
+						<a
+							href={`#${outfit.id}`}
+							class="block rounded-full border border-line bg-white px-3.5 py-1.5 text-sm text-ink transition-colors hover:border-accent hover:text-accent data-[active=true]:border-accent data-[active=true]:bg-accent-muted data-[active=true]:text-accent"
+							data-lookbook-nav-link
+							data-outfit-id={outfit.id}
+							data-active={index === 0 ? 'true' : 'false'}
+						>
+							<span class="sm:hidden">{index + 1}</span>
+							<span class="hidden sm:inline">
+								{index + 1}. {outfit.title}
+							</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+
+	<div class="mx-auto max-w-2xl px-4 pt-6 sm:max-w-3xl sm:px-6 sm:pt-8 lg:max-w-4xl">
+		{
+			lookbook.outfits.map((outfit) => {
+				const images = outfitImages(outfit);
+				const galleryStart =
+					images.length > 0 ? lightboxIndexBySrc.get(images[0]) ?? 0 : 0;
+				const total = outfitTotal(outfit.items);
+
+				return (
+					<section
+						id={outfit.id}
+						class="scroll-mt-[4.5rem] pb-12 sm:scroll-mt-20 sm:pb-14"
+						data-lookbook-section
+						data-outfit-id={outfit.id}
+					>
+						<div class="mb-4 sm:mb-5">
+							<h2 class="font-serif text-[clamp(1.35rem,4vw,1.75rem)] text-ink">{outfit.title}</h2>
+							{outfit.note ? (
+								<p class="mt-2 text-[0.98rem] leading-relaxed text-ink-muted">{outfit.note}</p>
+							) : null}
+						</div>
+
+						{
+							images.length > 0 ? (
+								<LookbookOutfitGallery
+									images={images}
+									title={outfit.title}
+									rootId={`${lookbook.slug}-${outfit.id}`}
+									lightboxStartIndex={galleryStart}
+									lightboxId={lightboxId}
+								/>
+							) : null
+						}
+
+						<ul class="grid gap-3 sm:grid-cols-1">
+							{
+								outfit.items.map((item) => {
+									const price = formatPrice(item);
+									const itemLbIndex = item.image
+										? lightboxIndexBySrc.get(item.image)
+										: undefined;
+
+									return (
+										<li class="rounded-[var(--radius-md)] border border-line bg-white p-3.5 sm:p-4">
+											<div class="flex gap-3 sm:gap-4">
+												{
+													item.image ? (
+														<button
+															type="button"
+															class="group/item relative h-[4.5rem] w-[4.5rem] shrink-0 cursor-zoom-in overflow-hidden rounded-[var(--radius-sm)] sm:h-20 sm:w-20"
+															data-lightbox-open
+															data-lightbox-target={lightboxId}
+															data-lightbox-index={itemLbIndex ?? 0}
+															aria-label={`Увеличить: ${item.name}`}
+														>
+															<img
+																src={item.image}
+																alt={item.name}
+																class="h-full w-full object-cover transition-transform group-hover/item:scale-105"
+																loading="lazy"
+																decoding="async"
+															/>
+														</button>
+													) : (
+														<div class="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-cream-100 text-xs text-taupe sm:h-20 sm:w-20">
+															{item.brand?.slice(0, 2).toUpperCase() ?? '—'}
+														</div>
+													)
+												}
+												<div class="min-w-0 flex-1">
+													<p class="font-medium leading-snug text-ink">{item.name}</p>
+													{item.brand ? <p class="text-sm text-taupe">{item.brand}</p> : null}
+													{price ? <p class="mt-1 text-sm font-medium text-ink">{price}</p> : null}
+													<a
+														href={item.url}
+														target="_blank"
+														rel="noopener noreferrer"
+														class="mt-2.5 inline-flex min-h-11 items-center text-sm font-medium text-accent hover:text-accent-hover"
+													>
+														В магазин →
+													</a>
+												</div>
+											</div>
+										</li>
+									);
+								})
+							}
+						</ul>
+
+						{
+							total > 0 ? (
+								<p class="mt-4 text-right text-sm text-ink-muted">
+									Общая стоимость:{' '}
+									<span class="font-medium text-ink">
+										{new Intl.NumberFormat('ru-RU', {
+											style: 'currency',
+											currency: 'RUB',
+											maximumFractionDigits: 0,
+										}).format(total)}
+									</span>
+								</p>
+							) : null
+						}
+					</section>
+				);
+			})
+		}
+	</div>
+
+	<footer class="border-t border-line px-4 py-10 text-center sm:px-6">
+		<p class="text-sm text-ink-muted">Подборка подготовлена Ириной Осиповой</p>
+		<a href="https://osipovastyle.ru" class="mt-2 inline-block text-sm text-accent hover:text-accent-hover">
+			osipovastyle.ru
+		</a>
+	</footer>
+
+	{
+		lightboxSlides.length > 0 ? (
+			<LookbookLightbox slides={lightboxSlides} rootId={lightboxId} />
+		) : null
+	}
+</article>
+
+<script>
+	function initLookbookNav() {
+		const links = document.querySelectorAll<HTMLAnchorElement>('[data-lookbook-nav-link]');
+		const sections = document.querySelectorAll<HTMLElement>('[data-lookbook-section]');
+		if (links.length === 0 || sections.length === 0) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					const id = entry.target.getAttribute('data-outfit-id');
+					links.forEach((link) => {
+						const active = link.dataset.outfitId === id;
+						link.dataset.active = active ? 'true' : 'false';
+					});
+				}
+			},
+			{ rootMargin: '-40% 0px -45% 0px', threshold: 0 }
+		);
+
+		sections.forEach((section) => observer.observe(section));
+	}
+
+	initLookbookNav();
+</script>

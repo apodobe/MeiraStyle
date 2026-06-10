@@ -1,0 +1,204 @@
+---
+interface LightboxSlide {
+	src: string;
+	alt: string;
+	caption?: string;
+}
+
+interface Props {
+	slides: LightboxSlide[];
+	rootId: string;
+}
+
+const { slides, rootId } = Astro.props;
+---
+
+<div
+	class="lookbook-lightbox fixed inset-0 z-[100] hidden items-center justify-center bg-ink/92 p-0 sm:p-6"
+	data-lookbook-lightbox
+	data-lightbox-id={rootId}
+	hidden
+	role="dialog"
+	aria-modal="true"
+	aria-label="Просмотр фото"
+>
+	<button
+		type="button"
+		class="absolute right-3 top-3 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:right-6 sm:top-6"
+		data-lightbox-close
+		aria-label="Закрыть"
+	>
+		×
+	</button>
+
+	<button
+		type="button"
+		class="absolute left-2 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:left-4 sm:flex"
+		data-lightbox-prev
+		aria-label="Предыдущее фото"
+	>
+		‹
+	</button>
+	<button
+		type="button"
+		class="absolute right-2 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:right-4 sm:flex"
+		data-lightbox-next
+		aria-label="Следующее фото"
+	>
+		›
+	</button>
+
+	<div class="relative flex h-full w-full max-w-4xl flex-col justify-center">
+		<div class="absolute left-1/2 top-4 z-20 -translate-x-1/2 rounded-full bg-black/40 px-3 py-1 text-sm text-white backdrop-blur-sm" data-lightbox-counter>
+			1 / {slides.length}
+		</div>
+
+		<div
+			class="absolute inset-0 overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] [scrollbar-width:none] snap-x snap-mandatory [&::-webkit-scrollbar]:hidden"
+			data-lightbox-track
+			tabindex="0"
+		>
+			<div class="flex h-full min-h-[60dvh] items-center">
+				{
+					slides.map((slide, index) => (
+						<figure
+							class="flex h-full w-full shrink-0 grow-0 basis-full snap-center snap-always flex-col items-center justify-center px-2 pt-14 pb-24 sm:px-8"
+							data-lightbox-slide
+							data-caption={slide.caption ?? slide.alt}
+						>
+							<img
+								src={slide.src}
+								alt={slide.alt}
+								class="max-h-[72dvh] w-auto max-w-full object-contain"
+								loading={index === 0 ? 'eager' : 'lazy'}
+								decoding="async"
+								draggable="false"
+							/>
+						</figure>
+					))
+				}
+			</div>
+		</div>
+
+		<p class="pointer-events-none absolute bottom-6 left-0 right-0 z-20 px-6 text-center text-sm text-white/90" data-lightbox-caption>
+			{slides[0]?.caption ?? slides[0]?.alt ?? ''}
+		</p>
+	</div>
+</div>
+
+<script>
+	function prefersReducedMotion() {
+		return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	}
+
+	function initLightbox(root: HTMLElement) {
+		const track = root.querySelector<HTMLElement>('[data-lightbox-track]');
+		const counter = root.querySelector<HTMLElement>('[data-lightbox-counter]');
+		const captionEl = root.querySelector<HTMLElement>('[data-lightbox-caption]');
+		const slides = root.querySelectorAll<HTMLElement>('[data-lightbox-slide]');
+		const slideCount = slides.length;
+		if (!track || slideCount === 0) return;
+
+		let lastFocus: HTMLElement | null = null;
+
+		function getSlideWidth() {
+			const first = slides[0];
+			return first ? first.getBoundingClientRect().width : track.clientWidth;
+		}
+
+		function getIndex() {
+			const w = getSlideWidth();
+			if (w <= 0) return 0;
+			return Math.max(0, Math.min(slideCount - 1, Math.round(track.scrollLeft / w)));
+		}
+
+		function scrollToIndex(index: number) {
+			const w = getSlideWidth();
+			track.scrollTo({
+				left: index * w,
+				behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+			});
+		}
+
+		function sync() {
+			const index = getIndex();
+			if (counter) counter.textContent = `${index + 1} / ${slideCount}`;
+			const slide = slides[index];
+			if (captionEl && slide) {
+				captionEl.textContent = slide.dataset.caption ?? '';
+			}
+		}
+
+		function open(index: number) {
+			lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+			root.hidden = false;
+			root.classList.remove('hidden');
+			root.classList.add('flex');
+			document.body.style.overflow = 'hidden';
+			requestAnimationFrame(() => {
+				scrollToIndex(index);
+				sync();
+				track.focus();
+			});
+		}
+
+		function close() {
+			root.hidden = true;
+			root.classList.add('hidden');
+			root.classList.remove('flex');
+			document.body.style.overflow = '';
+			lastFocus?.focus();
+		}
+
+		root.querySelector('[data-lightbox-close]')?.addEventListener('click', close);
+		root.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => {
+			scrollToIndex(Math.max(0, getIndex() - 1));
+		});
+		root.querySelector('[data-lightbox-next]')?.addEventListener('click', () => {
+			scrollToIndex(Math.min(slideCount - 1, getIndex() + 1));
+		});
+
+		root.addEventListener('click', (event) => {
+			if (event.target === root) close();
+		});
+
+		let scrollTimer = 0;
+		track.addEventListener('scroll', () => {
+			window.clearTimeout(scrollTimer);
+			scrollTimer = window.setTimeout(sync, 64);
+		});
+
+		track.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				close();
+			} else if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				scrollToIndex(Math.max(0, getIndex() - 1));
+			} else if (event.key === 'ArrowRight') {
+				event.preventDefault();
+				scrollToIndex(Math.min(slideCount - 1, getIndex() + 1));
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (root.hidden) return;
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				close();
+			}
+		});
+
+		document.querySelectorAll<HTMLElement>('[data-lightbox-open]').forEach((trigger) => {
+			if (trigger.dataset.lightboxTarget !== root.dataset.lightboxId) return;
+			trigger.addEventListener('click', () => {
+				const index = Number(trigger.dataset.lightboxIndex ?? '0');
+				open(Number.isFinite(index) ? index : 0);
+			});
+		});
+
+		(window as unknown as Record<string, unknown>).__lookbookLightboxInit = true;
+	}
+
+	document.querySelectorAll<HTMLElement>('[data-lookbook-lightbox]').forEach(initLightbox);
+</script>

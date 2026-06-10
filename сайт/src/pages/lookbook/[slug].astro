@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LookbookGate from '../../components/lookbook/LookbookGate.astro';
+import LookbookView from '../../components/lookbook/LookbookView.astro';
+import { getLookbookBySlug, getLookbookSlugs } from '../../data/lookbooks/registry';
+
+export function getStaticPaths() {
+	return getLookbookSlugs().map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const lookbook = slug ? getLookbookBySlug(slug) : undefined;
+
+if (!lookbook) {
+	return Astro.redirect('/404');
+}
+
+const pageTitle = `${lookbook.title} — ${lookbook.clientName}`;
+const pageDescription =
+	lookbook.intro?.slice(0, 160) ??
+	`Персональная подборка образов для ${lookbook.clientName}. Ирина Осипова — стилист.`;
+---
+
+<Layout title={pageTitle} description={pageDescription} noindex>
+	<LookbookGate slug={lookbook.slug} />
+	<LookbookView lookbook={lookbook} />
+</Layout>

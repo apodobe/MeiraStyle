@@ -1,0 +1,78 @@
+---
+interface Props {
+	slug: string;
+}
+
+const { slug } = Astro.props;
+const storageKey = `osipova-lookbook-${slug}`;
+---
+
+<div
+	class="lookbook-gate fixed inset-0 z-50 flex items-center justify-center bg-cream-50 px-5"
+	data-lookbook-gate
+	data-slug={slug}
+	data-storage-key={storageKey}
+>
+	<div class="w-full max-w-sm text-center">
+		<p class="font-serif text-2xl text-ink">Личный лукбук</p>
+		<p class="mt-2 text-sm text-ink-muted">Введите код доступа от стилиста</p>
+		<form class="mt-8 space-y-4" data-lookbook-gate-form>
+			<input
+				type="password"
+				inputmode="numeric"
+				autocomplete="off"
+				placeholder="Код"
+				class="w-full rounded-[var(--radius-md)] border border-line bg-white px-4 py-3 text-center text-lg tracking-widest text-ink outline-none focus:border-accent"
+				data-lookbook-password
+				required
+			/>
+			<p class="hidden text-sm text-accent" data-lookbook-gate-error>Неверный код</p>
+			<button
+				type="submit"
+				class="w-full rounded-[var(--radius-md)] bg-accent px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+			>
+				Открыть
+			</button>
+		</form>
+	</div>
+</div>
+
+<script>
+	const PASSWORD = '770';
+
+	function initGate(root: HTMLElement) {
+		const storageKey = root.dataset.storageKey ?? '';
+		const content = document.querySelector('[data-lookbook-content]');
+		if (!content) return;
+
+		if (sessionStorage.getItem(storageKey) === 'ok') {
+			root.remove();
+			content.removeAttribute('hidden');
+			return;
+		}
+
+		const form = root.querySelector<HTMLFormElement>('[data-lookbook-gate-form]');
+		const input = root.querySelector<HTMLInputElement>('[data-lookbook-password]');
+		const error = root.querySelector<HTMLElement>('[data-lookbook-gate-error]');
+
+		form?.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const value = input?.value.trim() ?? '';
+			if (value === PASSWORD) {
+				sessionStorage.setItem(storageKey, 'ok');
+				root.remove();
+				content.removeAttribute('hidden');
+				return;
+			}
+			if (error) {
+				error.classList.remove('hidden');
+			}
+			if (input) {
+				input.value = '';
+				input.focus();
+			}
+		});
+	}
+
+	document.querySelectorAll<HTMLElement>('[data-lookbook-gate]').forEach(initGate);
+</script>

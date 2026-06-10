@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "astro dev",
     "dev:api": "node scripts/dev-booking-api.cjs",
-    "build": "node scripts/generate-favicon.mjs && astro build && node scripts/postbuild-hosting.mjs",
+    "lookbook:placeholders": "node scripts/generate-lookbook-placeholders.mjs",
+    "lookbook:prices": "node scripts/fetch-lookbook-prices.mjs",
+    "build": "node scripts/generate-favicon.mjs && node scripts/generate-lookbook-placeholders.mjs katrin-sara && node scripts/fetch-lookbook-prices.mjs && astro build && node scripts/postbuild-hosting.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "npm run build && node scripts/deploy-ftp.mjs",

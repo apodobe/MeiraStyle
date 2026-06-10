@@ -7,7 +7,11 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://osipovastyle.ru',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/lookbook/'),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
     server: {

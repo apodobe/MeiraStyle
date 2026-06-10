@@ -1,0 +1,405 @@
+{
+	"slug": "katrin-sara",
+	"clientName": "Катрин Сара",
+	"title": "Подбор образов — онлайн-шопинг",
+	"dateLabel": "10 июня 2026",
+	"intro": "Подборка по категориям: рубашки, топы, лонгсливы и домашняя одежда. Lamoda, Selfmade и Belle You — ссылки, фото и ориентир по бюджету.",
+	"outfits": [
+		{
+			"id": "cat-shirts",
+			"title": "Рубашки",
+			"note": "Рубашки и блузы для будней и выходов.",
+			"images": [
+				"/images/lookbook/katrin-sara/budni-shirt.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-shirt-fit-1.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-shirt-fit-2.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-blouse-tie.jpg"
+			],
+			"items": [
+				{
+					"id": "budni-shirt",
+					"name": "Рубашка Lamoda Exclusive",
+					"brand": "Annen",
+					"url": "https://www.lamoda.ru/p/MP002XW1LIYC/",
+					"price": 4599,
+					"image": "/images/lookbook/katrin-sara/budni-shirt.jpg"
+				},
+				{
+					"id": "budni-sm-shirt-fit-1",
+					"name": "Рубашка «Искусство момента»",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/novinki/product/rubashka-pritalennaya-749af0",
+					"price": 13990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-shirt-fit-1.jpg"
+				},
+				{
+					"id": "budni-sm-shirt-fit-2",
+					"name": "Рубашка «Брижит»",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/rubashki/product/rubashka-pritalennaya?variant_id=2035727609",
+					"price": 13990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-shirt-fit-2.jpg"
+				},
+				{
+					"id": "budni-sm-blouse-tie",
+					"name": "Блуза «Прима»",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/svadebnaya-kollektsiya/product/bluzka-na-zavyazkah-2",
+					"price": 11990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-blouse-tie.jpg"
+				}
+			]
+		},
+		{
+			"id": "cat-tops",
+			"title": "Топы",
+			"note": "Топы, футболки, боди и поло.",
+			"images": [
+				"/images/lookbook/katrin-sara/budni-tee.jpg",
+				"/images/lookbook/katrin-sara/budni-top-terry.jpg",
+				"/images/lookbook/katrin-sara/budni-body.jpg",
+				"/images/lookbook/katrin-sara/budni-top-1.jpg",
+				"/images/lookbook/katrin-sara/budni-top-2.jpg",
+				"/images/lookbook/katrin-sara/budni-top-k6gj.jpg",
+				"/images/lookbook/katrin-sara/budni-top-eaae.jpg",
+				"/images/lookbook/katrin-sara/budni-top-l4g0.jpg",
+				"/images/lookbook/katrin-sara/budni-top-reversible.jpg",
+				"/images/lookbook/katrin-sara/budni-top-dryo.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-top-asym.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-tee-straz.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-top-lace.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-top-bando-1.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-top-bando-2.jpg",
+				"/images/lookbook/katrin-sara/budni-by-polo-brown.jpg",
+				"/images/lookbook/katrin-sara/budni-lamoda-tee-dyf1.jpg"
+			],
+			"items": [
+				{
+					"id": "budni-tee",
+					"name": "Футболка",
+					"brand": "Befree",
+					"url": "https://www.lamoda.ru/p/MP002XW1E1LS/",
+					"price": 799,
+					"image": "/images/lookbook/katrin-sara/budni-tee.jpg"
+				},
+				{
+					"id": "budni-top-terry",
+					"name": "Топ Терри",
+					"brand": "99Colorspace",
+					"url": "https://www.lamoda.ru/p/MP002XW14AO6/",
+					"price": 4490,
+					"image": "/images/lookbook/katrin-sara/budni-top-terry.jpg"
+				},
+				{
+					"id": "budni-body",
+					"name": "Боди",
+					"brand": "Charmstore",
+					"url": "https://www.lamoda.ru/p/MP002XW1DT4U/",
+					"price": 4990,
+					"image": "/images/lookbook/katrin-sara/budni-body.jpg"
+				},
+				{
+					"id": "budni-top-emberens-1",
+					"name": "Топ",
+					"brand": "Emberens",
+					"url": "https://www.lamoda.ru/p/MP002XW1EP0N/",
+					"price": 2510,
+					"image": "/images/lookbook/katrin-sara/budni-top-1.jpg"
+				},
+				{
+					"id": "budni-top-emberens-2",
+					"name": "Топ",
+					"brand": "Emberens",
+					"url": "https://www.lamoda.ru/p/MP002XW1DOFF/",
+					"price": 2837,
+					"image": "/images/lookbook/katrin-sara/budni-top-2.jpg"
+				},
+				{
+					"id": "budni-top-k6gj",
+					"name": "Топ",
+					"brand": "Villanelle",
+					"url": "https://www.lamoda.ru/p/MP002XW1K6GJ/",
+					"price": 3717,
+					"image": "/images/lookbook/katrin-sara/budni-top-k6gj.jpg"
+				},
+				{
+					"id": "budni-top-eaae",
+					"name": "Топ",
+					"brand": "Emberens",
+					"url": "https://www.lamoda.ru/p/MP002XW1EAAE/",
+					"price": 1916,
+					"image": "/images/lookbook/katrin-sara/budni-top-eaae.jpg"
+				},
+				{
+					"id": "budni-top-l4g0",
+					"name": "Топ Lamoda Exclusive",
+					"brand": "Emberens",
+					"url": "https://www.lamoda.ru/p/MP002XW1L4G0/",
+					"price": 2111,
+					"image": "/images/lookbook/katrin-sara/budni-top-l4g0.jpg"
+				},
+				{
+					"id": "budni-top-reversible",
+					"name": "Топ двусторонний",
+					"brand": "Mi55 I5",
+					"url": "https://www.lamoda.ru/p/MP002XW0MVCT/",
+					"price": 5904,
+					"image": "/images/lookbook/katrin-sara/budni-top-reversible.jpg"
+				},
+				{
+					"id": "budni-top-dryo",
+					"name": "Топ",
+					"brand": "Ihomelux",
+					"url": "https://www.lamoda.ru/p/MP002XW1DRYO/",
+					"price": 1848,
+					"image": "/images/lookbook/katrin-sara/budni-top-dryo.jpg"
+				},
+				{
+					"id": "budni-sm-top-asym",
+					"name": "Асимметричный топ «Эспрессо»",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/novinki/product/top-asimmetrichnyy-2?variant_id=2192477329",
+					"price": 12990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-top-asym.jpg"
+				},
+				{
+					"id": "budni-sm-tee-straz",
+					"name": "Футболка со стразами-лепестками",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/futbolki-i-longslivy/product/futbolka-s-vyshivkoy-iz-straz",
+					"price": 6990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-tee-straz.jpg"
+				},
+				{
+					"id": "budni-sm-top-lace",
+					"name": "Топ Lovely Lace",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/futbolki/product/top-s-kruzhevom?variant_id=1826055793",
+					"price": 9990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-top-lace.jpg"
+				},
+				{
+					"id": "budni-sm-top-bando-1",
+					"name": "Топ-бандо Tube",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/futbolki/product/top-bando-b5b380?variant_id=2017264257",
+					"price": 3990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-top-bando-1.jpg"
+				},
+				{
+					"id": "budni-sm-top-bando-2",
+					"name": "Топ-бандо Tube",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/futbolki/product/top-bando-ce97e0?variant_id=2017264089",
+					"price": 3990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-top-bando-2.jpg"
+				},
+				{
+					"id": "budni-by-polo-brown",
+					"name": "Футболка-поло коричневый принт",
+					"brand": "Belle You",
+					"url": "https://belleyou.ru/catalog/odezhda/polo/futbolka_polo_korichnevyy_print/",
+					"price": 3499,
+					"image": "/images/lookbook/katrin-sara/budni-by-polo-brown.jpg"
+				},
+				{
+					"id": "budni-lamoda-tee-dyf1",
+					"name": "Футболка",
+					"brand": "Nezabu",
+					"url": "https://www.lamoda.ru/p/MP002XW1DYF1/",
+					"price": 2400,
+					"image": "/images/lookbook/katrin-sara/budni-lamoda-tee-dyf1.jpg"
+				}
+			]
+		},
+		{
+			"id": "cat-longsleeves",
+			"title": "Лонгсливы",
+			"note": "Лонгсливы на разную погоду и настроение.",
+			"images": [
+				"/images/lookbook/katrin-sara/budni-long-1.jpg",
+				"/images/lookbook/katrin-sara/budni-long-2.jpg",
+				"/images/lookbook/katrin-sara/budni-long-3.jpg",
+				"/images/lookbook/katrin-sara/budni-long-anabelle.jpg",
+				"/images/lookbook/katrin-sara/budni-long-drvq.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-long-lace-3.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-long-lace-2.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-long-thin.jpg",
+				"/images/lookbook/katrin-sara/budni-by-long-choco.jpg"
+			],
+			"items": [
+				{
+					"id": "budni-long-moontrees",
+					"name": "Лонгслив",
+					"brand": "Moontrees",
+					"url": "https://www.lamoda.ru/p/MP002XW0UOHX/",
+					"price": 2900,
+					"image": "/images/lookbook/katrin-sara/budni-long-1.jpg"
+				},
+				{
+					"id": "budni-long-idol",
+					"name": "Лонгслив",
+					"brand": "IDOL",
+					"url": "https://www.lamoda.ru/p/MP002XW0VEUM/",
+					"price": 6990,
+					"image": "/images/lookbook/katrin-sara/budni-long-2.jpg"
+				},
+				{
+					"id": "budni-long-aprel",
+					"name": "Лонгслив",
+					"brand": "Апрель",
+					"url": "https://www.lamoda.ru/p/MP002XW1DT4G/",
+					"price": 745,
+					"image": "/images/lookbook/katrin-sara/budni-long-3.jpg"
+				},
+				{
+					"id": "budni-long-anabelle",
+					"name": "Лонгслив Anabelle",
+					"brand": "OnStyle",
+					"url": "https://www.lamoda.ru/p/MP002XW1EBW4/",
+					"price": 4690,
+					"image": "/images/lookbook/katrin-sara/budni-long-anabelle.jpg"
+				},
+				{
+					"id": "budni-long-drvq",
+					"name": "Лонгслив",
+					"brand": "Top Top",
+					"url": "https://www.lamoda.ru/p/MP002XW1DRVQ/",
+					"price": 2104,
+					"image": "/images/lookbook/katrin-sara/budni-long-drvq.jpg"
+				},
+				{
+					"id": "budni-sm-long-lace-3",
+					"name": "Лонгслив White Dream",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/novogodnyaya-kollektsiya/product/longsliv-s-kruzhevom-3",
+					"price": 4990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-long-lace-3.jpg"
+				},
+				{
+					"id": "budni-sm-long-lace-2",
+					"name": "Лонгслив Pink Dream",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/novogodnyaya-kollektsiya/product/longsliv-s-kruzhevom-2",
+					"price": 4990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-long-lace-2.jpg"
+				},
+				{
+					"id": "budni-sm-long-thin",
+					"name": "Лонгслив Comfy",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/futbolki-i-longslivy/product/longsliv-iz-tonkogo-trikotazha-36bf15?variant_id=1963168465",
+					"price": 4990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-long-thin.jpg"
+				},
+				{
+					"id": "budni-by-long-choco",
+					"name": "Лонгслив шоколад",
+					"brand": "Belle You",
+					"url": "https://belleyou.ru/catalog/odezhda/longsliv_shokolad/",
+					"price": 4999,
+					"image": "/images/lookbook/katrin-sara/budni-by-long-choco.jpg"
+				}
+			]
+		},
+		{
+			"id": "cat-home",
+			"title": "Домашняя одежда",
+			"note": "Для дома: халаты, пижама, легинсы, брюки и уютные вещи.",
+			"images": [
+				"/images/lookbook/katrin-sara/budni-by-leggings-stirrup-black.jpg",
+				"/images/lookbook/katrin-sara/budni-by-leggings-stirrup-choco.jpg",
+				"/images/lookbook/katrin-sara/budni-by-leggings-black.jpg",
+				"/images/lookbook/katrin-sara/budni-by-robe-canary.jpg",
+				"/images/lookbook/katrin-sara/budni-by-pants-lilac.jpg",
+				"/images/lookbook/katrin-sara/budni-by-pants-pink.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-pants-harem.jpg",
+				"/images/lookbook/katrin-sara/budni-sm-cardigan-maxi.jpg",
+				"/images/lookbook/katrin-sara/budni-lamoda-robe-home.jpg",
+				"/images/lookbook/katrin-sara/budni-lamoda-pajama.jpg"
+			],
+			"items": [
+				{
+					"id": "budni-by-leggings-stirrup-black",
+					"name": "Легинсы со штрипками черные",
+					"brand": "Belle You",
+					"url": "https://belleyou.ru/catalog/odezhda/leginsy/leginsy_s_vysokoy_posadkoy_so_shtripkami_chernyy/",
+					"price": 3599,
+					"image": "/images/lookbook/katrin-sara/budni-by-leggings-stirrup-black.jpg"
+				},
+				{
+					"id": "budni-by-leggings-stirrup-choco",
+					"name": "Легинсы со штрипками горячий шоколад",
+					"brand": "Belle You",
+					"url": "https://belleyou.ru/catalog/odezhda/leginsy/leginsy_s_vysokoy_posadkoy_so_shtripkami_goryachiy_shokolad/",
+					"price": 3599,
+					"image": "/images/lookbook/katrin-sara/budni-by-leggings-stirrup-choco.jpg"
+				},
+				{
+					"id": "budni-by-leggings-black",
+					"name": "Легинсы с высокой посадкой черные",
+					"brand": "Belle You",
+					"url": "https://belleyou.ru/catalog/odezhda/leginsy/leginsy_s_vysokoy_posadkoy_chernyy_2/",
+					"price": 4999,
+					"image": "/images/lookbook/katrin-sara/budni-by-leggings-black.jpg"
+				},
+				{
+					"id": "budni-by-robe-canary",
+					"name": "Халат канареечный",
+					"brand": "Belle You",
+					"url": "https://belleyou.ru/catalog/home-collection/khalat_kanareechnyy/",
+					"price": 18999,
+					"image": "/images/lookbook/katrin-sara/budni-by-robe-canary.jpg"
+				},
+				{
+					"id": "budni-by-pants-lilac",
+					"name": "Брюки сиреневые",
+					"brand": "Belle You",
+					"url": "https://belleyou.ru/catalog/odezhda/bryuki/bryuki_sirenevyy/",
+					"price": 8399,
+					"image": "/images/lookbook/katrin-sara/budni-by-pants-lilac.jpg"
+				},
+				{
+					"id": "budni-by-pants-pink",
+					"name": "Брюки розовые",
+					"brand": "Belle You",
+					"url": "https://belleyou.ru/catalog/odezhda/bryuki/bryuki_rozovyy_1/",
+					"price": 8399,
+					"image": "/images/lookbook/katrin-sara/budni-by-pants-pink.jpg"
+				},
+				{
+					"id": "budni-sm-pants-harem",
+					"name": "Брюки day-off",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/bryuki/product/bryuki-sharovary-3",
+					"price": 7990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-pants-harem.jpg"
+				},
+				{
+					"id": "budni-sm-cardigan-maxi",
+					"name": "Кардиган day-off",
+					"brand": "Selfmade",
+					"url": "https://selfmade.ru/collection/trikotazh/product/kardigan-maksi-legkiy",
+					"price": 11990,
+					"image": "/images/lookbook/katrin-sara/budni-sm-cardigan-maxi.jpg"
+				},
+				{
+					"id": "budni-lamoda-robe-home",
+					"name": "Халат домашний",
+					"brand": "Togas",
+					"url": "https://www.lamoda.ru/p/MP002XW00OL3/",
+					"price": 19990,
+					"image": "/images/lookbook/katrin-sara/budni-lamoda-robe-home.jpg"
+				},
+				{
+					"id": "budni-lamoda-pajama",
+					"name": "Пижама",
+					"brand": "Rose&Petal",
+					"url": "https://www.lamoda.ru/p/MP002XW1KN78/",
+					"price": 9388,
+					"image": "/images/lookbook/katrin-sara/budni-lamoda-pajama.jpg"
+				}
+			]
+		}
+	]
+}

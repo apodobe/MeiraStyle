@@ -80,12 +80,26 @@ function isForbiddenRel(relPosix) {
 function resolvePath(urlPath) {
 	const decoded = decodeURIComponent(urlPath.split('?')[0]);
 	const rel = decoded === '/' || decoded === '' ? 'index.html' : decoded.replace(/^\//, '');
-	const joined = path.join(root, path.normalize(rel));
-	if (!joined.startsWith(root)) return null;
-	const relFromRoot = path.relative(root, joined);
-	const relPosix = relFromRoot.split(path.sep).join('/');
-	if (isForbiddenRel(relPosix)) return null;
-	return joined;
+	const candidates = [rel];
+	if (!path.extname(rel)) {
+		candidates.push(`${rel.replace(/\/$/, '')}/index.html`);
+	}
+
+	for (const candidate of candidates) {
+		const joined = path.join(root, path.normalize(candidate));
+		if (!joined.startsWith(root)) continue;
+		const relFromRoot = path.relative(root, joined);
+		const relPosix = relFromRoot.split(path.sep).join('/');
+		if (isForbiddenRel(relPosix)) continue;
+		try {
+			if (fs.existsSync(joined) && fs.statSync(joined).isFile()) {
+				return joined;
+			}
+		} catch {
+			// ignore stat errors
+		}
+	}
+	return null;
 }
 
 const server = http.createServer((req, res) => {

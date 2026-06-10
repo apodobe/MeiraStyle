@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img">
+  <rect width="800" height="1000" fill="#dfd4c8"/>
+  <rect x="48" y="48" width="704" height="904" fill="none" stroke="#6b6159" stroke-width="2" opacity="0.25"/>
+  <text x="400" y="488" text-anchor="middle" font-family="Georgia, serif" font-size="36" fill="#6b6159">Образ 1</text>
+  <text x="400" y="532" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#6b6159" opacity="0.7">Деталь</text>
+</svg>
